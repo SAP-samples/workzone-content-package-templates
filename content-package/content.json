@@ -1,0 +1,32 @@
+{
+	"card-sample": {
+		"type": "card",
+		"src": {
+			"from": "../card",
+			"path": "./",
+			"build": "npm i && npm run-script build",
+			"package": "card.zip",
+			"manifest": "src/manifest.json"
+		}
+	},
+	"workflow-sample": {
+		"type": "workflow",
+		"src": {
+			"from": "../workflow",
+			"path": "./",
+			"build": "npm i && npm run-script build",
+			"package": "workflow.zip",
+			"manifest": "src/manifest.json"
+		}
+	},
+	"workspace-sample": {
+		"type": "workspace-template",
+		"src": {
+			"from": "../workspace-template",
+			"path": "./",
+			"build": "npm i && npm run-script build",
+			"package": "workspace-template.zip",
+			"manifest": "src/manifest.json"
+		}
+	}
+}

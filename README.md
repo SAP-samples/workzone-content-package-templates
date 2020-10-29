@@ -1,9 +1,9 @@
 # SAP Work Zone Project Templates for Content Packages
-[![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/workzone-workflow-journey-app-template)](https://api.reuse.software/info/github.com/SAP-samples/workzone-workflow-journey-app-template)
+[![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/workzone-content-package-templates)](https://api.reuse.software/info/github.com/SAP-samples/workzone-content-package-templates)
 
 ## Description
 
-This repository contains templates to setup repositories and build script to create and upload Content Packages for SAP Work Zone. Find detailed information within the sub folders.
+This repository contains templates to setup repositories/project and tools to create and upload Content Packages for SAP Work Zone. Find detailed information within the sub folders.
 - **card**
 
   Create UI Integration Cards project for Work Zone
@@ -12,14 +12,12 @@ This repository contains templates to setup repositories and build script to cre
   Create Workflow projects
 - **workspace-template**
 
-  Create a project to distribute a exported Workspace Template from your Work Zone instance
-- **journey**
-
   Create a project from a journey
 - **package**
 
   Create a project for a Content Package that bundles the above artifacts
-- **build**
+
+- **tools**
 
   Required build tooling to create bundles for the artifacts and the package
 
@@ -43,7 +41,7 @@ https://github.com/SAP-samples/workzone-content-package-templates.git
 
 ## Known Issues
 
-You can find the known issues here: [Issues](https://github.com/SAP-samples/workzone-content-package-template/issues).
+You can find the known issues here: [Issues](https://github.com/SAP-samples/workzone-content-package-templates/issues).
 
 ## How to obtain support
 
