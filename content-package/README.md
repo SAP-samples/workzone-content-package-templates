@@ -12,16 +12,13 @@ This folder provides the necessary metadata for a content package and the build 
 
 ### Adapt ````manifest.json````
 - Manifest sap.package->id needs to be in your namespace, example company.department.packagename.
-  It should have at least 2 dots and be unique. Do not use sap as a company
+  It should have at least 2 dots and be unique for your company. Do not use "sap" as a company
 
 ### Translations of texts
-Translated texts of a Card should be maintained in ````/i18n```` folder.
-
+Translated texts of a conent package should be maintained in ````/src/i18n```` folder. Those will appear in a content package manager application to describe the content package.  
 The .properties files should use suffix
-````_language_REGION````.
-
+````_language_REGION````.  
 **Example**
-
 ````i18n_en_US.properties````
 
 ## Adapt the manifest.json settings
@@ -30,13 +27,13 @@ The manifest.json file allows the following settings. Please maintain the values
 {
     "sap.package": {
         // Unique id of the content package
-        "id": "cpkg.project.template",
+        "id": "sap.workzone.content.package.sample",
         "packageVersion": {
             // Version in semantic versioning major.minor.patch
             "version": "1.0.0",
             // Defines on which version transition a company administrator is notified if the package
             // is updated by default. A company administrator can change this setting
-            // (optional), possible values: none|major|major.minor|all, defaults: major
+            // (optional), possible values: none|major|major.minor|all, defaults: all
             "upgradeNotification": "none"
         },
         // Vendor information of the content package (mandatory)
@@ -95,21 +92,26 @@ The manifest.json file allows the following settings. Please maintain the values
         },
 
         "contents": [
-            // Array of artifacts based on contents.json. // This section will be created during during build
+            // Array of artifacts based on content.json. // This section will be created during during build
         ],
         "documentation": {
             "url": ""
-        },
+		},
+		"consumption": [
+			//List of strings that define the Work Zone Product for which this content package should be used
+			//"SWZHR" is used for SAP Work Zone for HR product
+			//If not provided or empty all SAP Work Zone products will be able to install this content package
+		],
         // Dependencies of this package
         "dependencies": {
             "applications": [{
                 // application's technical name
                 "name": ""
             }],
-            "services": {
+            "services": [{
                 // services's technical name, for example SAPWorkZoneHR
                 "name": ""
-                }
+                }]
         }
     }
 }
@@ -117,13 +119,18 @@ The manifest.json file allows the following settings. Please maintain the values
 ````
 
 ## Maintain the content for the package
-The ````contents.json```` links the repositories of the individual artifacts that should be contained in the Content Package.
+The ````content.json```` links the repositories of the individual artifacts that should be contained in the Content Package.
 
 The key of each entry in the map reflects one artifact.
 
 ### Using git repositories for the artifacts
-The build-all script will first pull the files from the git repository mentioned under the ````git```` entry and for the branch mentioned in the ````branch```` entry. Instead of the branch-name (like master) you could also give a label (like latest). Ensure to that you have a valid access to the git repository.
-Also the default branch is master.
+It is recommended to use seperate git repositories to maintain the contents of a package. It will allow easier maintenance of the content for sub-sequent versions.
+The build-all script will first pull the files from the git repositories.  mentioned under the  
+- ````git```` defines the repository
+- ````branch```` defines the branch of the repository (like master). You could also give a label (like latest) within this setting.  
+The default branch is "master".
+
+Ensure to that you have a valid access to the git repository.
 
 ```` javascript
 {
@@ -134,7 +141,7 @@ Also the default branch is master.
 		"type": "card",
 		"src": {
 			//git repository to pull the content
-			"git": "git@github.wdf.sap.corp:sap-work-zone/cpkg-project-template-card.git",
+			"git": "git@github:orgnaization/project.git",
 			//branch or label of the repository
 			"branch": "master",
 			//the path within the repository to execute the build
@@ -142,7 +149,7 @@ Also the default branch is master.
 			//the build scripts to create the artifact package
 			"build": "npm i && npm run-script build",
 			//the location of the artifact's package after the build
-			"package": "cpkg-project-template-card.zip",
+			"package": "company-department-card-name.zip",
 			//the location of the manifest to extract the sap.artifact settings for the Content Package
 			"manifest": "src/manifest.json"
 		}
@@ -166,13 +173,13 @@ Instead of the above git and branch entry you can use the ````from```` entry to 
 		"type": "card",
 		"src": {
 			//path to the source folder
-			"from": "../cpkg-project-template-card",
+			"from": "../card",
 			//the path within the from folder to execute the build
 			"path": "./",
 			//the build scripts to create the artifact package
 			"build": "npm i && npm run-script build",
 			//the location of the artifact's package after the build
-			"package": "cpkg-project-template-card.zip",
+			"package": "sap-workzone-cpkg-card-sample.zip",
 			//the location of the manifest to extract the sap.artifact settings for the Content Package
 			"manifest": "src/manifest.json"
 		}
@@ -189,57 +196,59 @@ Content Packages use sematic versioning (major.minor.patch) according to the fol
 - minor version can include compatible enhancements
 - major version can include incompatible enhancements
 
-To increase the version
-- Change the version of the package.json
-	"version": "1.0.0" -> "version": "1.0.1" For patches
-	"version": "1.0.0" -> "version": "1.1.0" For minor version changes
-	"version": "1.0.0" -> "version": "2.0.0" For major version changes
+**Increase the version**
+- Change the version of the package.json  
+	- For patches  
+	````"version"````: ````"1.0.0"```` -> ````"version"````: ````"1.0.1"````  
+	- For minor version changes  
+	````"version"````: ````"1.0.0"```` -> ````"version"````: ````"1.1.0"````  
+	- For major version changes  
+	````"version"````: ````"1.0.0"```` -> ````"version"````: ````"2.0.0"```` 
 
-- Change the version of manifest.json
-sap.package->artifactVersion->version
-- Set the upgradeNotification to a convenient value for example sap.package->artifactVersion->upgradeNotification = "major"
+- Change the version  
+````manifest.json sap.package/artifactVersion/version````  
+
+- Set the upgradeNotification to a convenient value for example ````sap.package/artifactVersion/upgradeNotification : "major"````
 
 
 ### How to create repositories for different artifact types?
 Similar to this project template.
 
 Use the following project templates to create your artifact repositories:
-- [cpkg-project-template-card](https://github.wdf.sap.corp/sap-work-zone/cpkg-project-template-card)
-- [cpkg-project-template-workflow](https://github.wdf.sap.corp/sap-work-zone/cpkg-project-template-workflow)
-- [cpkg-project-template-workspace](https://github.wdf.sap.corp/sap-work-zone/cpkg-project-template-workspace)
+- [sap-workzone-cpkg-card-sample](https://github.com/SAP-samples/workzone-content-package-templates/tree/main/card)
+- [sap-workzone-cpkg-workflow-sample](https://github.com/SAP-samples/workzone-content-package-templates/tree/main/workflow)
+- [sap-workzone-cpkg-workspace-template-sample](https://github.com/SAP-samples/workzone-content-package-templates/tree/main/workspace-template)
 
 ## Creation of the Content Package
 Run the following commands
 ```` cmd
 npm install
-
 npm run build-all
-
 ````
 You can run the different build steps individually
 ```` cmd
-#pull from projects refered from content.json
+# pull from projects refered from content.json
 npm run pull
 
-#build projects content.json
+# build projects content.json
 npm run build
 ````
-A ````package.zip```` file will be created in the root folder. The content of the zip can be found in the ````package````folder created during the build. This has the following structure.
+## Result
+A ````package.zip```` file will be created in the root folder. The content of the zip can be found in the ````package````folder created during the build. This has the following structure. The artifact names are taken from the ````content.json````
 ```` javascript
 package.zip
    	manifest.json         //package manifest
 	i18n                  //containing i18n.properties for package manifest texts)
 	artifacts
-		artifact1
+		card-sample
 			manifest.json //artifact manifest
 			i18n          //containing i18n.properties for artifact1's manifest texts
 			data.zip      //artifact1 package
-		artifact2
+		workflow-sample
 			manifest.json //artifact manifest
 			i18n          //containing i18n.properties for artifact2's manifest texts
 			data.zip      //artifact2 package
 			...
-	businessHub.zip   //potential use in API Business Hub, currently only for a POC
 ````
 
 ## Uploading a Content Package to SAP Work Zone

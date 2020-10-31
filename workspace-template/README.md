@@ -21,7 +21,7 @@ Create a new git project and copy the content of this folder into the repository
 - Manifest ````sap.artifact/artifactVersion/version```` needs to be increased if necessary
 
 ### Translations of texts
-Translated texts of a workspace template should be maintained in ````/src/i18n```` folder. Those will appear in a content package manager application to describe the workflow.  
+Translated texts of a workspace template should be maintained in ````/src/i18n```` folder. Those will appear in a content package manager application to describe the workspace-template.  
 The .properties files should use suffix
 ````_language_REGION````.  
 **Example**
@@ -29,7 +29,7 @@ The .properties files should use suffix
 
 ## Create and export a Workspace Template from SAP Work Zone
 
-**Steps to export a Workspace Template**
+**Steps to create a Workspace Template**
 - Open SAP Work Zone as a Company Administrator
 - Create a workspace with all contents that should be part of the Workspace Template.
 - Save the workspace as a Workspace Template.
