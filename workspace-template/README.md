@@ -1,4 +1,4 @@
-# Template for a 'SAP Work Zone - Workspace Template' repository
+# SAP Work Zone - Workspace Template Project
 
 ## Using this template
 Create a new git project and copy the content of this folder into the repository.

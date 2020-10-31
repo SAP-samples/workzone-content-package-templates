@@ -5,17 +5,15 @@
 
 This repository contains templates to setup repositories/projects and tools to create and upload Content Packages for SAP Work Zone.
 - **card**  
-  Create UI Integration Cards projects
+  Create [UI Integration Cards](./card/README.md) projects 
 - **workflow**  
-  Create Workflow projects
+  Create [Workflow](./workflow/README.md) projects
 - **workspace-template**  
-  Create a project from a journey
+  Create [Workspace-Template](./workspace-template/README.md)
 - **content-package**  
   Create a project for a Content Package that bundles the above artifacts
 - **tools**  
   Required build tooling to create bundles for the artifacts and the package
-- **deploy**  
-  Deployment documentation and scripts to upload Content Packages to the Work Zone Package Store for distribution.
 
 
 ## Requirements

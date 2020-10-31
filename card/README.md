@@ -1,4 +1,4 @@
-# Template for 'UI Integration Card' repository
+# SAP Work Zone - UI Integration Card Project
 
 ## Using this template
 Create a new git project and copy the content of this folder into the repository.

@@ -1,4 +1,5 @@
-# Template for a 'SAP Work Zone - Workflow' repository
+# SAP Work Zone - Workflow Project
+
 
 ## Using this template
 Create a new git project and copy the content of this folder into the repository.
