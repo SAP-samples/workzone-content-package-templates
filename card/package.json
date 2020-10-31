@@ -13,8 +13,7 @@
 		"directory": "card"
 	},
 	"devDependencies": {
-		"sap-workzone-cpkg-tools": "https://github.com:SAP-samples/workzone-content-package-templates.git",
-		"@ui5/cli": "2.2.3"
+		"sap-workzone-cpkg-tools": "git+ssh://git@github.com/SAP-samples/workzone-content-package-templates.git"
 	},
 	"author": "SAP SE",
 	"license": "ISC"

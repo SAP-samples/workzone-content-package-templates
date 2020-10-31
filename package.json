@@ -7,7 +7,6 @@
 		"url": "https://github.com:SAP-samples/workzone-content-package-templates.git"
 	},
 	"dependencies": {
-		"tools": "file:tools",
 		"glob": "7.1.4",
 		"rimraf": "2.6.2",
 		"fs-extra": "9.0.0",
