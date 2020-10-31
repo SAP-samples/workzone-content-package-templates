@@ -5,14 +5,14 @@ Create a new git project and copy the content of this folder into the repository
 
 
 ### Project Structure
-- ````/```` folder contains the general project files for build
+- ````/```` folder contains the general project files for for building the artifact
 - ````/src```` folder contains the workspace-template manifest.json, the template zip and translations
-- ````/src/i18n```` folder contains the workspace-template translations text properties.
-- ````/src/workspace-template.zip```` downloaded workspace template from a SAP Work Zone.
+- ````/src/i18n```` folder contains the workspace-template translations text properties
+- ````/src/workspace-template.zip```` downloaded workspace template from a SAP Work Zone
 
 
 ### Adapt ````package.json````
-- Change the name of the package json. This name is used to create a bundle (zip) for the workspace template artifact.  
+- Change the name of the package json. **This name is used to create a bundle (zip) for the workspace template artifact**.  
 	from ````name````: ````sap-workzone-cpkg-workspace-template-sample````  
 	to ````name````: ````company-department-workspace-template-name````
 

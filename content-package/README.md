@@ -1,18 +1,22 @@
-# Template for a 'SAP Work Zone - Content Package' repository
+# SAP Work Zone - Content Package Project
 This folder provides the necessary metadata for a content package and the build configuration to create a Content Package
 
 ### Project Structure
-- ````/```` folder contains the general project files for build and the metadata manifest.json
+- ````/```` folder contains the general project files for for building the package and the metadata manifest.json
 - ````/i18n```` folder contains the translation of texts properties from the manifest.
 
 ### Adapt ````package.json````
-- Change the name of the package.json
-	"name": "sap-content-package-sample" -> "name": "company-department-packagename"
-	"author": "SAP SE" -> "author": "your-author-name"
+- Change the name of the package.json  
+	from 
+	````"name"````: ````"sap-content-package-sample"````  
+	to ````"name"````: ````"company-department-packagename"````  
+- Change the author of the package.json  
+	from ````"author"````: ````"SAP SE"````  
+	to ````"author"````: ````"your-author-name"````
 
 ### Adapt ````manifest.json````
-- Manifest sap.package->id needs to be in your namespace, example company.department.packagename.
-  It should have at least 2 dots and be unique for your company. Do not use "sap" as a company
+- Manifest ````sap.package/id```` needs to be in your namespace, example ````company.department.packagename````.  
+  It should have at least 2 dots and be unique for your company. Do not use ````sap```` as a company
 
 ### Translations of texts
 Translated texts of a conent package should be maintained in ````/src/i18n```` folder. Those will appear in a content package manager application to describe the content package.  

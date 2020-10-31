@@ -5,13 +5,13 @@ Create a new git project and copy the content of this folder into the repository
 
 
 ### Project Structure
-- ````/```` folder contains the general project files for build
+- ````/```` folder contains the general project files for for building the artifact
 - ````/src```` folder contains the card source and test files
-- ````/src/i18n```` folder contains the card translation text properties.
+- ````/src/i18n```` folder contains the card translation text properties
 - ````/src/test```` folders with manual or qunit tests of the card. This folder will not be bundled during build and not delivered to consumers of the card.
 
 ### Adapt ````package.json````
-- Change the name of the package json. This name is used to create a bundle (zip) for the card artifact.  
+- Change the name of the package json. This **name is used to create a bundle (zip) for the card artifact**.  
 	from ````name````: ````sap-workzone-cpkg-card-sample````  
 	to ````name````: ````company-department-card-name````
 

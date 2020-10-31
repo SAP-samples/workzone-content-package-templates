@@ -5,13 +5,13 @@
 Create a new git project and copy the content of this folder into the repository.
 
 ### Project Structure
-- ````/```` folder contains the general project files for build
+- ````/```` folder contains the general project files for building the artifact
 - ````/src```` folder contains the files for the workflow metadata (manifest.json) and the mta.yaml to create the workflow.mtar for testing.
-- ````/src/i18n```` folder contains the translation of texts properties from the manifest.
-- ````/src/workflow```` folder contains the workflow project sources like the workflow projects in BAS.
+- ````/src/i18n```` folder contains the translation of texts properties from the manifest
+- ````/src/workflow```` folder contains the workflow project sources like the workflow projects in BAS (Business Application Studio)
 
 ### Adapt ````package.json````
-- Change the name of the package json. This name is used to create a bundle (zip) for the workflow artifact.  
+- Change the name of the package json. **This name is used to create a bundle (zip) for the workflow artifact**.  
 	from ````name````: ````sap-workzone-cpkg-workflow-sample````  
 	to ````name````: ````company-department-workflow-name````
 
