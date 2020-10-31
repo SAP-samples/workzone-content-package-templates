@@ -1,1 +1,1 @@
-require("sap-workzone-cpkg-tools").workspacetemplate.build(__dirname);
+require("sap-workzone-cpkg-tools")["workspace-template"].build(__dirname);
