@@ -12,5 +12,5 @@ resources:
 builder:
   resources:
     excludes:
-     - "test-resources/**"
+     - "test/**"
      - ".card/**"

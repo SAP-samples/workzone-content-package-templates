@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "Sample project structure for a card artifact that will be included into a content package",
 	"scripts": {
-		"start": "ui5 serve -o test-resources/manual/index.html",
+		"start": "ui5 serve -o test/manual/index.html",
 		"eslint": "eslint src",
 		"build": "node scripts/build.js"
 	},
@@ -13,7 +13,8 @@
 		"directory": "card"
 	},
 	"devDependencies": {
-		"sap-workzone-cpkg-tools": "git+ssh://git@github.com/SAP-samples/workzone-content-package-templates.git"
+		"sap-workzone-cpkg-tools": "git+ssh://git@github.com/SAP-samples/workzone-content-package-templates.git",
+		"express": "4.17.1"
 	},
 	"author": "SAP SE",
 	"license": "ISC"

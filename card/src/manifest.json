@@ -20,8 +20,7 @@
 	},
 	"sap.card": {
 		"type": "List",
-		"designtime": "./dt/configuration",
-		"extension": "./ext/extension",
+		"designtime": "dt/configuration",
 		"data": {
 			"json": {
 				"items": [
