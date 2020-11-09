@@ -7,7 +7,7 @@ Create a new git project and copy the content of this folder into the repository
 ### Project Structure
 - ````/```` folder contains the general project files for for building the artifact
 - ````/src```` folder contains the workspace-template manifest.json, the template zip and translations
-- ````/src/i18n```` folder contains the workspace-template translations text properties
+- ````/src/i18n```` folder contains the workspace-template translations text properties. Use UTF-8 encoding for translations.
 - ````/src/workspace-template.zip```` downloaded workspace template from a SAP Work Zone
 
 
@@ -22,7 +22,7 @@ Create a new git project and copy the content of this folder into the repository
 
 ### Translations of texts
 Translated texts of a workspace template should be maintained in ````/src/i18n```` folder. Those will appear in a content package manager application to describe the workspace-template.  
-The .properties files should use suffix
+The .properties files should use suffix below and be UTF-8 encoded.
 ````_language_REGION````.  
 **Example**
 ````i18n_en_US.properties````

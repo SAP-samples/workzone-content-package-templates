@@ -3,7 +3,7 @@ This folder provides the necessary metadata for a content package and the build 
 
 ### Project Structure
 - ````/```` folder contains the general project files for for building the package and the metadata manifest.json
-- ````/i18n```` folder contains the translation of texts properties from the manifest.
+- ````/i18n```` folder contains the translation of texts properties from the manifest. Use UTF-8 encoding for translations.
 
 ### Adapt ````package.json````
 - Change the name of the package.json  
@@ -20,7 +20,7 @@ This folder provides the necessary metadata for a content package and the build 
 
 ### Translations of texts
 Translated texts of a conent package should be maintained in ````/src/i18n```` folder. Those will appear in a content package manager application to describe the content package.  
-The .properties files should use suffix
+The .properties files should use suffix below and be UTF-8 encoded.
 ````_language_REGION````.  
 **Example**
 ````i18n_en_US.properties````
@@ -242,15 +242,15 @@ A ````package.zip```` file will be created in the root folder. The content of th
 ```` javascript
 package.zip
    	manifest.json         //package manifest
-	i18n                  //containing i18n.properties for package manifest texts)
+	i18n                  //containing i18n.properties for package manifest texts. UTF-8 encoded
 	artifacts
 		card-sample
 			manifest.json //artifact manifest
-			i18n          //containing i18n.properties for artifact1's manifest texts
+			i18n          //containing i18n.properties for artifact1's manifest texts. UTF-8 encoded
 			data.zip      //artifact1 package
 		workflow-sample
 			manifest.json //artifact manifest
-			i18n          //containing i18n.properties for artifact2's manifest texts
+			i18n          //containing i18n.properties for artifact2's manifest texts. UTF-8 encoded
 			data.zip      //artifact2 package
 			...
 ````

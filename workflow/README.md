@@ -7,7 +7,7 @@ Create a new git project and copy the content of this folder into the repository
 ### Project Structure
 - ````/```` folder contains the general project files for building the artifact
 - ````/src```` folder contains the files for the workflow metadata (manifest.json) and the mta.yaml to create the workflow.mtar for testing.
-- ````/src/i18n```` folder contains the translation of texts properties from the manifest
+- ````/src/i18n```` folder contains the translation of texts properties from the manifest. Use UTF-8 encoding for translations.
 - ````/src/workflow```` folder contains the workflow project sources like the workflow projects in BAS (Business Application Studio)
 
 ### Adapt ````package.json````
@@ -27,7 +27,7 @@ Create a new git project and copy the content of this folder into the repository
 
 ### Translations of texts
 Translated texts of a workflow artifact should be maintained in ````/src/i18n```` folder. Those will appear in a content package manager application to describe the workflow.  
-The .properties files should use suffix
+The .properties files should use suffix below and be UTF-8 encoded.
 ````_language_REGION````.  
 **Example**
 ````i18n_en_US.properties````

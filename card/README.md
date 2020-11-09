@@ -7,7 +7,7 @@ Create a new git project and copy the content of this folder into the repository
 ### Project Structure
 - ````/```` folder contains the general project files for for building the artifact
 - ````/src```` folder contains the card source and test files
-- ````/src/i18n```` folder contains the card translation text properties
+- ````/src/i18n```` folder contains the card translation text properties files. Use UTF-8 encoding for translations.
 - ````/src/test```` folders with manual or qunit tests of the card. This folder will not be bundled during build and not delivered to consumers of the card.
 
 ### Adapt ````package.json````
@@ -78,7 +78,7 @@ You can also use SAP Business Application Studio that has additional [developer 
 
 ### Translations of texts
 Translated texts of a card should be maintained in ````/src/i18n```` folder.  
-The .properties files should use suffix
+The .properties files should use suffix below and be UTF-8 encoded.
 ````_language_REGION````.  
 **Example**
 ````i18n_en_US.properties````
