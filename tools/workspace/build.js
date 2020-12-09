@@ -11,7 +11,7 @@ module.exports.build = function (dir) {
 		out = path.join(root, name + ".zip");
 
 
-	util.log.fancy("Building Workspace Template Package");
+	util.log.fancy("Building Workspace Package");
 	console.log(" - Clean files and folders");
 
 	rimraf.sync(dist);
@@ -24,5 +24,5 @@ module.exports.build = function (dir) {
 	console.log(" - Zip content to " + name + ".zip");
 	util.zip.folder(out, dist);
 
-	util.log.fancy("Building Workspace Template Package finished successful");
+	util.log.fancy("Building Workspace Package finished successful");
 }
