@@ -3,7 +3,6 @@ const contentpackagebuild = require("./content-package/build.js"),
 	contentpackagevalidate = require("./content-package/validate.js"),
 	cardbuild = require("./card/build.js"),
 	workspacetemplatebuild = require("./workspace-template/build.js"),
-	workspacebuild = require("./workspace/build.js"),
 	workflowbuild = require("./workflow/build.js");
 
 module.exports = {
@@ -17,9 +16,6 @@ module.exports = {
 	},
 	"workspace-template": {
 		build: workspacetemplatebuild.build
-	},
-	"workspace": {
-		build: workspacebuild.build
 	},
 	"workflow": {
 		build: workflowbuild.build
