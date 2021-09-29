@@ -10,7 +10,7 @@ module.exports.build = function (dir) {
 		name = packagejson.name,
 		businessHubBuild = process.argv.slice(2)[0] === "-b";
 
-	var validTypes = ["card", "workflow", "workspace-template", "workspace", "theme"];
+	var validTypes = ["card", "workflow", "workspace-template"];
 
 	function getJSONPathValue(sPath, o) {
 		var a = sPath.split("/");
