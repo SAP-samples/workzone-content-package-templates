@@ -19,13 +19,23 @@
 			"manifest": "src/manifest.json"
 		}
 	},
-	"workspace-sample": {
+	"workspace-template-sample": {
 		"type": "workspace-template",
 		"src": {
 			"from": "../workspace-template",
 			"path": "./",
 			"build": "npm i && npm run-script build",
 			"package": "sap-workzone-cpkg-workspace-template-sample.zip",
+			"manifest": "src/manifest.json"
+		}
+	},
+	"workspace-sample": {
+		"type": "workspace",
+		"src": {
+			"from": "../workspace",
+			"path": "./",
+			"build": "npm i && npm run-script build",
+			"package": "sap-workzone-cpkg-workspace-sample.zip",
 			"manifest": "src/manifest.json"
 		}
 	}
