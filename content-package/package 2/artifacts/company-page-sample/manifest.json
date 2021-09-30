@@ -1,0 +1,20 @@
+{
+  "_version": "1.27.0",
+  "_generator": "cpkg-project-template",
+  "sap.artifact": {
+    "id": "cpkg.project.template.homepage",
+    "type": "homepage",
+    "i18n": "i18n/i18n.properties",
+    "title": "{{TITLE}}",
+    "subTitle": "{{SUBTITLE}}",
+    "artifactVersion": {
+      "version": "1.0.0"
+    },
+    "shortTitle": "{{SHORTTITLE}}",
+    "info": "{{INFO}}",
+    "description": "{{DESCRIPTION}}",
+    "tags": {
+      "keywords": ["{{KEYWORD1}}"]
+    }
+  }
+}

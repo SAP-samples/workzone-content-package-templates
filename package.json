@@ -1,20 +1,20 @@
 {
-	"name": "sap-workzone-cpkg-templates",
-	"version": "1.0.0",
-	"description": "Sample project structure for a workflow artifact that will be included into a content package",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com:SAP-samples/workzone-content-package-templates.git"
-	},
-	"dependencies": {
-		"glob": "7.1.4",
-		"rimraf": "2.6.2",
-		"fs-extra": "9.0.0",
-		"properties-reader": "2.0.0",
-		"handlebars": "4.7.7",
-		"bestzip": "2.1.7",
-		"@ui5/cli": "2.2.3"
-	},
-	"author": "SAP SE",
-	"license": "ISC"
+  "name": "sap-workzone-cpkg-templates",
+  "version": "1.0.0",
+  "description": "Sample project structure for a workflow artifact that will be included into a content package",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com:SAP-samples/workzone-content-package-templates.git"
+  },
+  "dependencies": {
+    "glob": "7.1.4",
+    "rimraf": "2.6.2",
+    "fs-extra": "9.0.0",
+    "properties-reader": "2.0.0",
+    "handlebars": "4.7.7",
+    "bestzip": "2.1.7",
+    "@ui5/cli": "2.2.3"
+  },
+  "author": "SAP SE",
+  "license": "ISC"
 }

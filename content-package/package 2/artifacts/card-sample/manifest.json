@@ -1,0 +1,22 @@
+{
+	"_version": "1.27.0",
+	"_generator": "cpkg-project-template",
+	"sap.artifact": {
+		"id": "sap.workzone.cpkg.card.sample",
+		"type": "card",
+		"i18n": "i18n/i18n.properties",
+		"title": "{{TITLE}}",
+		"subTitle": "{{SUBTITLE}}",
+		"shortTitle": "{{SHORTTITLE}}",
+		"info": "{{INFO}}",
+		"description": "{{DESCRIPTION}}",
+		"tags": {
+			"keywords": [
+				"{{KEYWORD1}}"
+			]
+		},
+		"artifactVersion": {
+			"version": "1.0.0"
+		}
+	}
+}
