@@ -43,7 +43,7 @@ The .properties files should use suffix below and be UTF-8 encoded.
 
 ## Import the Workspace template to SAP Work Zone for testing
 
-As a company administrator in SAP Work Zone, you can import a workspace template. During Content Package installation from the customer, the import will be done automatically.
+As a company administrator in SAP Work Zone, you can import a workspaceemplate. During Content Package installation from the customer, the import will be done automatically.
 
 **Steps to import a Workspace**
 

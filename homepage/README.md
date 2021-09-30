@@ -44,7 +44,7 @@ The .properties files should use suffix below and be UTF-8 encoded.
 
 ## Import the Home Page to SAP Work Zone for testing
 
-As a company administrator in SAP Work Zone, you can import a workspace template. During Content Package installation from the customer, the import will be done automatically.
+As a company administrator in SAP Work Zone, you can import a homepage. During Content Package installation from the customer, the import will be done automatically.
 
 **Steps to import a Home Page**
 
