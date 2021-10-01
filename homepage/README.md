@@ -9,11 +9,11 @@ Create a new git project and copy the content of this folder into the repository
 - `/` folder contains the general project files for for building the artifact
 - `/src` folder contains the homepage manifest.json, the template zip and translations
 - `/src/i18n` folder contains the homepage translations text properties. Use UTF-8 encoding for translations.
-- `/src/homepage.zip` downloaded workspace template from a SAP Work Zone
+- `/src/homepage.zip` downloaded homepage from a SAP Work Zone
 
 ### Adapt `package.json`
 
-- Change the name of the package json. **This name is used to create a bundle (zip) for the workspace template artifact**.  
+- Change the name of the package json. **This name is used to create a bundle (zip) for the homepage artifact**.  
   from `name`: `sap-workzone-cpkg-homepage-sample`  
   to `name`: `company-department-homepage-name`
 
@@ -24,7 +24,7 @@ Create a new git project and copy the content of this folder into the repository
 
 ### Translations of texts
 
-Translated texts of a workspace template should be maintained in `/src/i18n` folder. Those will appear in a content package manager application to describe the homepage.  
+Translated texts of a homepage should be maintained in `/src/i18n` folder. Those will appear in a content package manager application to describe the homepage.  
 The .properties files should use suffix below and be UTF-8 encoded.
 `_language_REGION`.  
 **Example**
