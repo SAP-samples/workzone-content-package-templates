@@ -9,6 +9,26 @@
       "manifest": "src/manifest.json"
     }
   },
+  "journey-card-sample": {
+    "type": "card",
+    "src": {
+      "from": "../journey",
+      "path": "./card",
+      "build": "npm i && npm run-script build",
+      "package": "sap-workzone-cpkg-journey-card-sample.zip",
+      "manifest": "src/manifest.json"
+    }
+  },
+  "journey-workflow-sample": {
+    "type": "card",
+    "src": {
+      "from": "../journey",
+      "path": "./workflow",
+      "build": "npm i && npm run-script build",
+      "package": "sap-workzone-cpkg-journey-workflow-sample.zip",
+      "manifest": "src/manifest.json"
+    }
+  },
   "workflow-sample": {
     "type": "workflow",
     "src": {
