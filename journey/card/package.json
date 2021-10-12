@@ -5,7 +5,7 @@
   "scripts": {
     "start": "ui5 serve -o test/manual/index.html",
     "eslint": "eslint src",
-    "build": "node scripts/journey.js && node scripts/build.js"
+    "build": "node scripts/build.js"
   },
   "repository": {
     "type": "git",

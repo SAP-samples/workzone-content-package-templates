@@ -25,6 +25,7 @@ module.exports.pull = function (dir, local) {//load content.json
 
   function pullContent(name, config) {
     if (config.src) {
+      config.src.path = config.src.path.replace("./", "");
       util.log.fancy("Pull content for " + n + ": " + (config.src.git || config.src.from) + (config.src.git && config.src.branch ? " on branch/label " + config.src.branch || "master" : ""));
       var baseDir = path.join(contentsDir, name);
       console.log(baseDir);
@@ -39,7 +40,7 @@ module.exports.pull = function (dir, local) {//load content.json
         console.log("Cloning..." + config.src.git + " on branch:" + config.src.branch);
         util.spawn.sync("git clone -b " + config.src.branch + " --depth 1 " + config.src.git, baseDir, "Cannot sync from git " + config.src.git);
         console.log("Copy content folder " + config.src.path + " to " + baseDir + "/build");
-        fs.copySync(path.join(baseDir, projectDir, config.src.path), path.join(baseDir, "build"));
+        fs.copySync(path.join(baseDir, projectDir), path.join(baseDir, "build"));
         console.log("Completed pull for " + name);
       } else if (config.src.from) {
         console.log("Copy... " + config.src.from);
@@ -59,13 +60,13 @@ module.exports.pull = function (dir, local) {//load content.json
         }
         console.log("From:" + fromDir);
         fs.copySync(fromDir, projectDir);
-        fs.copySync(path.join(fromDir, config.src.path), path.join(baseDir, "build"));
+        fs.copySync(path.join(fromDir), path.join(baseDir, "build"));
         console.log("Created build path " + path.join(baseDir, "build"));
         if (local) {
-          console.log("Use local tools for " + path.join(baseDir, "build", "scripts", "build.js"));
-          var build = fs.readFileSync(path.join(baseDir, "build", "scripts", "build.js"), { encoding: "utf-8" });
+          console.log("Use local tools for " + path.join(baseDir, "build", config.src.path, "scripts", "build.js"));
+          var build = fs.readFileSync(path.join(baseDir, "build", config.src.path, "scripts", "build.js"), { encoding: "utf-8" });
           build = build.replace("sap-workzone-cpkg-tools", __dirname + "/../../tools/index.js");
-          fs.writeFileSync(path.join(baseDir, "build", "scripts", "build.js"), build);
+          fs.writeFileSync(path.join(baseDir, "build", config.src.path, "scripts", "build.js"), build);
         }
         console.log("Completed copy for " + name);
       }

@@ -1,7 +1,7 @@
 {
 	"_version": "1.18.0",
 	"sap.app": {
-		"id": "sap.workzone.cpkg.card.sample",
+		"id": "sap.workzone.cpkg.journey.card.sample",
 		"type": "card",
 		"i18n": "i18n/i18n.properties",
 		"title": "{{TITLE}}",
@@ -13,14 +13,11 @@
 		"info": "{{INFO}}",
 		"description": "{{DESCRIPTION}}",
 		"tags": {
-			"keywords": [
-				"{{KEYWORD1}}"
-			]
+			"keywords": ["{{KEYWORD1}}"]
 		}
 	},
 	"sap.card": {
 		"type": "List",
-		"designtime": "dt/configuration",
 		"data": {
 			"json": {
 				"items": [
@@ -49,6 +46,7 @@
 			}
 		},
 		"configuration": {
+			"editor": "configuration/configuration",
 			"parameters": {
 				"string": {
 					"value": "StringValue"

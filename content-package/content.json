@@ -20,7 +20,7 @@
     }
   },
   "journey-workflow-sample": {
-    "type": "card",
+    "type": "workflow",
     "src": {
       "from": "../journey",
       "path": "./workflow",

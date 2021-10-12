@@ -5,6 +5,7 @@ module.exports.build = function (dir) {
     fs = require("fs-extra"),
     packagejson = util.json.fromFile(path.join(dir, "..", "package.json")),
     name = packagejson.name,
+    ui5BuildParams = packagejson.ui5 && packagejson.ui5.buildParams ? packagejson.ui5.buildParams : "",
     root = path.join(dir, ".."),
     dist = path.join(root, "dist"),
     out = path.join(root, name + ".zip");
@@ -18,7 +19,8 @@ module.exports.build = function (dir) {
 
   console.log(" - Create dist folder and content");
 
-  util.spawn.sync("ui5 build", root, "UI5 build failed");
+  console.log(" - Run UI5 build: " + "ui5 build " + ui5BuildParams);
+  util.spawn.sync("ui5 build " + ui5BuildParams, root, "UI5 build failed");
 
   util.i18n.process(path.join(dist, "manifest.json"));
 

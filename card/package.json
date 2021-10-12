@@ -17,5 +17,8 @@
     "express": "4.17.1"
   },
   "author": "SAP SE",
-  "license": "ISC"
+  "license": "ISC",
+  "ui5": {
+    "buildParams": ""
+  }
 }

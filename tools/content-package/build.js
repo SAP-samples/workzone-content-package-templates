@@ -97,12 +97,13 @@ module.exports.build = function (dir) {
         targetDir = path.join(mainArtifactsPath, name),
         targetBusinessHubTargetDir = path.join(businessHubArtifactsPath, name);
       for (var i = 0; i < aRun.length; i++) {
-        util.spawn.sync(aRun[i], path.join(baseDir, "build"), aRun[i] + " cannot be executed.\n");
+        console.log("Run build in: " + path.join(baseDir, "build", config.src.path));
+        util.spawn.sync(aRun[i], path.join(baseDir, "build", config.src.path), aRun[i] + " cannot be executed.\n");
       }
 
       //copy the result package
       if (config.src.package) {
-        var packageSrcPath = path.join(baseDir, "build", config.src.package),
+        var packageSrcPath = path.join(baseDir, "build", config.src.path, config.src.package),
           packageTargetPath = path.join(targetDir, "data.zip"),
           packageBusinessHubTargetTargetPath = path.join(targetBusinessHubTargetDir, "data.zip");
         if (!fs.existsSync(packageSrcPath)) {
@@ -117,9 +118,9 @@ module.exports.build = function (dir) {
         }
       }
 
-      var manifestPath = path.join(baseDir, "build", config.src.manifest),
+      var manifestPath = path.join(baseDir, "build", config.src.path, config.src.manifest),
         manifest = util.json.fromFile(manifestPath),
-        sourceDir = path.join(baseDir, "build", (config.src.manifest.replace("manifest.json", ""))),
+        sourceDir = path.join(baseDir, "build", config.src.path, (config.src.manifest.replace("manifest.json", ""))),
         artifactManifest;
 
       //creating artifact.json
