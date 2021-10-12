@@ -13,7 +13,7 @@
     "properties-reader": "2.0.0",
     "handlebars": "4.7.7",
     "bestzip": "2.1.7",
-    "@ui5/cli": "2.2.3"
+    "@ui5/cli": "2.11.2"
   },
   "author": "SAP SE",
   "license": "ISC"
