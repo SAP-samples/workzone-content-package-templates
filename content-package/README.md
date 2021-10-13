@@ -1,33 +1,40 @@
 # SAP Work Zone - Content Package Project
+
 This folder provides the necessary metadata for a content package and the build configuration to create a Content Package
 
 ### Project Structure
-- ````/```` folder contains the general project files for for building the package and the metadata manifest.json
-- ````/i18n```` folder contains the translation of texts properties from the manifest. Use UTF-8 encoding for translations.
 
-### Adapt ````package.json````
+- `/` folder contains the general project files for for building the package and the metadata manifest.json
+- `/i18n` folder contains the translation of texts properties from the manifest. Use UTF-8 encoding for translations.
+
+### Adapt `package.json`
+
 - Change the name of the package.json  
-	from 
-	````"name"````: ````"sap-content-package-sample"````  
-	to ````"name"````: ````"company-department-packagename"````  
+  from
+  `"name"`: `"sap-content-package-sample"`  
+  to `"name"`: `"company-department-packagename"`
 - Change the author of the package.json  
-	from ````"author"````: ````"SAP SE"````  
-	to ````"author"````: ````"your-author-name"````
+  from `"author"`: `"SAP SE"`  
+  to `"author"`: `"your-author-name"`
 
-### Adapt ````manifest.json````
-- Manifest ````sap.package/id```` needs to be in your namespace, example ````company.department.packagename````.  
-  It should have at least 2 dots and be unique for your company. Do not use ````sap```` as a company
+### Adapt `manifest.json`
+
+- Manifest `sap.package/id` needs to be in your namespace, example `company.department.packagename`.  
+  It should have at least 2 dots and be unique for your company. Do not use `sap` as a company
 
 ### Translations of texts
-Translated texts of a conent package should be maintained in ````/src/i18n```` folder. Those will appear in a content package manager application to describe the content package.  
+
+Translated texts of a conent package should be maintained in `/src/i18n` folder. Those will appear in a content package manager application to describe the content package.  
 The .properties files should use suffix below and be UTF-8 encoded.
-````_language_REGION````.  
+`_language_REGION`.  
 **Example**
-````i18n_en_US.properties````
+`i18n_en_US.properties`
 
 ## Adapt the manifest.json settings
+
 The manifest.json file allows the following settings. Please maintain the values.
-```` javascript
+
+```javascript
 {
     "sap.package": {
         // Unique id of the content package
@@ -120,23 +127,26 @@ The manifest.json file allows the following settings. Please maintain the values
     }
 }
 
-````
+```
 
 ## Maintain the content for the package
-The ````content.json```` links the repositories of the individual artifacts that should be contained in the Content Package.
+
+The `content.json` links the repositories of the individual artifacts that should be contained in the Content Package.
 
 The key of each entry in the map reflects one artifact.
 
 ### Using git repositories for the artifacts
+
 It is recommended to use seperate git repositories to maintain the contents of a package. It will allow easier maintenance of the content for sub-sequent versions.
-The build-all script will first pull the files from the git repositories.  mentioned under the  
-- ````git```` defines the repository
-- ````branch```` defines the branch of the repository (like master). You could also give a label (like latest) within this setting.  
-The default branch is "master".
+The build-all script will first pull the files from the git repositories. mentioned under the
+
+- `git` defines the repository
+- `branch` defines the branch of the repository (like master). You could also give a label (like latest) within this setting.  
+  The default branch is "master".
 
 Ensure to that you have a valid access to the git repository.
 
-```` javascript
+```javascript
 {
 	//the name of the artifacts folder in the package
 	"artifact1"
@@ -160,15 +170,16 @@ Ensure to that you have a valid access to the git repository.
 	}
 	...
 }
-````
+```
 
 ### Using local folders for the artifacts
+
 You can also point to local folders in your environment.
 It is highly recommended to use git repositories for the artifacts that you deliver in a content package.
 For support and due to legal requirement it is necessary to store sources versioned. This is not necessary for testing of course.
-Instead of the above git and branch entry you can use the ````from```` entry to use local sources for your artifacts.
+Instead of the above git and branch entry you can use the `from` entry to use local sources for your artifacts.
 
-```` javascript
+```javascript
 {
 	//the name of the artifacts folder in the package
 	"artifact1"
@@ -190,56 +201,68 @@ Instead of the above git and branch entry you can use the ````from```` entry to 
 	}
 	...
 }
-````
-
+```
 
 ## Maintain the version of the Content Package
 
 Content Packages use sematic versioning (major.minor.patch) according to the following rules
+
 - patches include only bug fixes
 - minor version can include compatible enhancements
 - major version can include incompatible enhancements
 
 **Increase the version**
-- Change the version of the package.json  
-	- For patches  
-	````"version"````: ````"1.0.0"```` -> ````"version"````: ````"1.0.1"````  
-	- For minor version changes  
-	````"version"````: ````"1.0.0"```` -> ````"version"````: ````"1.1.0"````  
-	- For major version changes  
-	````"version"````: ````"1.0.0"```` -> ````"version"````: ````"2.0.0"```` 
+
+- Change the version of the package.json
+
+  - For patches  
+    `"version"`: `"1.0.0"` -> `"version"`: `"1.0.1"`
+  - For minor version changes  
+    `"version"`: `"1.0.0"` -> `"version"`: `"1.1.0"`
+  - For major version changes  
+    `"version"`: `"1.0.0"` -> `"version"`: `"2.0.0"`
 
 - Change the version  
-````manifest.json sap.package/artifactVersion/version````  
+  `manifest.json sap.package/artifactVersion/version`
 
-- Set the upgradeNotification to a convenient value for example ````sap.package/artifactVersion/upgradeNotification : "major"````
-
+- Set the upgradeNotification to a convenient value for example `sap.package/artifactVersion/upgradeNotification : "major"`
 
 ### How to create repositories for different artifact types?
+
 Similar to this project template.
 
 Use the following project templates to create your artifact repositories:
+
 - [sap-workzone-cpkg-card-sample](https://github.com/SAP-samples/workzone-content-package-templates/tree/main/card)
 - [sap-workzone-cpkg-workflow-sample](https://github.com/SAP-samples/workzone-content-package-templates/tree/main/workflow)
 - [sap-workzone-cpkg-workspace-template-sample](https://github.com/SAP-samples/workzone-content-package-templates/tree/main/workspace-template)
+- [sap-workzone-cpkg-workspace-sample](https://github.com/SAP-samples/workzone-content-package-templates/tree/main/workspace)
+- [sap-workzone-cpkg-homepage-sample](https://github.com/SAP-samples/workzone-content-package-templates/tree/main/homepage)
 
 ## Creation of the Content Package
+
 Run the following commands
-```` cmd
+
+```cmd
 npm install
 npm run build-all
-````
+```
+
 You can run the different build steps individually
-```` cmd
-# pull from projects refered from content.json
+
+```cmd
+# pull from projects referred from content.json
 npm run pull
 
 # build projects content.json
 npm run build
-````
+```
+
 ## Result
-A ````package.zip```` file will be created in the root folder. The content of the zip can be found in the ````package````folder created during the build. This has the following structure. The artifact names are taken from the ````content.json````
-```` javascript
+
+A `package.zip` file will be created in the root folder. The content of the zip can be found in the `package`folder created during the build. This has the following structure. The artifact names are taken from the `content.json`
+
+```javascript
 package.zip
    	manifest.json         //package manifest
 	i18n                  //containing i18n.properties for package manifest texts. UTF-8 encoded
@@ -253,7 +276,8 @@ package.zip
 			i18n          //containing i18n.properties for artifact2's manifest texts. UTF-8 encoded
 			data.zip      //artifact2 package
 			...
-````
+```
 
 ## Uploading a Content Package to SAP Work Zone
+
 Stay tuned... work in progress
