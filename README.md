@@ -51,7 +51,7 @@ In case you have a question, find a bug, or otherwise need support to use SAP pr
 - [SAP Community](https://community.sap.com/)
 - [SAP Business Application Studio](https://help.sap.com/viewer/product/SAP%20Business%20Application%20Studio/Cloud/en-US)
 - [SAP Work Zone](https://help.sap.com/viewer/fec5ca6e3229418f84a932c745cbe985/Cloud/en-US)
-- [SAP Cloud Platform Workflow](https://help.sap.com/viewer/product/WORKFLOW_SERVICE/Cloud/en-US)
+- [SAP Business Technology Platform (SAP BTP) Workflow](https://help.sap.com/viewer/product/WORKFLOW_SERVICE/Cloud/en-US)
 - [SAP UI5](https://help.sap.com/viewer/product/SAPUI5/External/en-US)
 
 ## Contributing
