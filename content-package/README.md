@@ -151,7 +151,7 @@ Ensure to that you have a valid access to the git repository.
 	//the name of the artifacts folder in the package
 	"artifact1"
 	{
-		// type of the artifact currently supported: card, workflow, workspace-template
+		// type of the artifact currently supported: card, workflow, workspace-template, workspace, homepage
 		"type": "card",
 		"src": {
 			//git repository to pull the content
@@ -184,7 +184,7 @@ Instead of the above git and branch entry you can use the `from` entry to use lo
 	//the name of the artifacts folder in the package
 	"artifact1"
 	{
-		// type of the artifact currently supported: card, workflow, workspace-template
+		// type of the artifact currently supported: card, workflow, workspace-template, workspace, homepage
 		"type": "card",
 		"src": {
 			//path to the source folder
@@ -280,4 +280,4 @@ package.zip
 
 ## Uploading a Content Package to SAP Work Zone
 
-Stay tuned... work in progress
+
