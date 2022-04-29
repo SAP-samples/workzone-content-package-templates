@@ -2,7 +2,7 @@
   "_version": "1.18.0",
   "sap.artifact": {
     "id": "cpkg.project.template.homepage",
-    "type": "homepage",
+    "type": "company-pages",
     "i18n": "i18n/i18n.properties",
     "title": "{{TITLE}}",
     "subTitle": "{{SUBTITLE}}",
