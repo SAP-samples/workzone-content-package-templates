@@ -47,6 +47,16 @@ The manifest.json file allows the following settings. Please maintain the values
             // (optional), possible values: none|major|major.minor|all, defaults: all
             "upgradeNotification": "none"
         },
+	// The release Notes of this package. This will be shown when a package has a version to upgrade. 
+	"releaseNotes": [
+	    // releaseNotes is an array, all the below items will be shown as different lines in the version detail.
+	    {
+	       // The title of the item
+	       "title": "Test new card name in 3.0.0"
+	       // The description of the item
+	       "description": "Description explaning what has been added",
+	    },
+	],
         // Vendor information of the content package (mandatory)
         "vendor": {
             // The id of the vendor, if any (optional)
