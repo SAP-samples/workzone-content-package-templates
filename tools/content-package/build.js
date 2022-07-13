@@ -46,7 +46,7 @@ module.exports.build = function (dir) {
   }
 
   //Create Artifact for API Hub
-  function createArtifactJSON(sourceDir, targetBusinessHubTargetDir) {
+  function createArtifactBusinessHubJSON(sourceDir, targetBusinessHubTargetDir) {
     var mapping = {
       "sap.artifact/id": "Name",
       "sap.artifact/title": "Title",
@@ -131,6 +131,8 @@ module.exports.build = function (dir) {
         };
         console.log("Card found: Deriving sap.artifact section");
         artifactManifest["sap.artifact"] = manifest["sap.app"];
+        //i18n is copied always in the i18n folder
+        artifactManifest["sap.artifact"].i18n = "i18n/i18n.properties";
 
         if (artifactManifest["sap.artifact"].applicationVersion) {
           artifactManifest["sap.artifact"].artifactVersion = artifactManifest["sap.artifact"].applicationVersion;
@@ -165,7 +167,7 @@ module.exports.build = function (dir) {
       if (businessHubBuild) {
         fs.mkdirSync(targetBusinessHubTargetDir);
         console.log("Generate artifact.json: " + targetDir + "/artifact.json");
-        createArtifactJSON(targetDir, targetBusinessHubTargetDir);
+        createArtifactBusinessHubJSON(targetDir, targetBusinessHubTargetDir);
       }
     }
   }
@@ -222,6 +224,7 @@ module.exports.build = function (dir) {
   console.log("Saving /package/manifest.json");
   util.json.toFile(path.join(mainPackagePath, "manifest.json"), man);
 
+  //base/i18n/i18n.properties
   if (fs.pathExistsSync(path.join(root, "i18n"))) {
     console.log("Copy i18n folder");
     fs.copySync(path.join(root, "i18n"), path.join(mainPackagePath, "i18n"));
