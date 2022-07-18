@@ -19,7 +19,27 @@ var util = {
 			}
 			util.spawn.sync("bestzip " + targetfile + " " + folder, sourcefolder);
 		}
-	},
+  },
+  readdir: function (path) {
+    var files;
+    try {
+      files = fs.readdirSync(path);
+    } catch (err) {
+      console.log("Error reading directory" + path);
+      throw err;
+    }
+    return files;
+  },
+  readfile: function (filename) {
+    var file;
+    try {
+      file = fs.readFileSync(filename, "utf-8");
+    } catch (err) {
+      console.log("Error reading " + filename);
+      throw err;
+    }
+    return file;
+  },
 	json: {
 		fromFile: function (filename) {
 			var s;
@@ -72,7 +92,18 @@ var util = {
 		}
 
 	},
-	i18n: {
+  i18n: {
+    isKey: function(key) {
+      return key.match(/{{[^{}]+}}/);
+    },
+    stripKey: function(key) {
+      return key.slice(2, key.length - 2);
+    },
+    allKeys: function(obj) {
+      const str = JSON.stringify(obj);
+      const keys = str.match(/{{[^{}]+}}/g);
+      return [...new Set(keys)];  // remove duplicates
+    },
 		create: function (dir, basename, settings) {
 			if (!settings || !settings.from || !settings.to) {
 				console.log("i18n: cannot create i18n file. No from/to languages given");
@@ -111,9 +142,9 @@ var util = {
 			}
 
 		},
-		process: function (manifestpath) {
-			var manifest = util.json.fromFile(manifestpath),
-				root = path.dirname(manifestpath),
+    process: function (manifestpath, i18npath) {
+      var manifest = util.json.fromFile(manifestpath),
+        root = i18npath || path.dirname(manifestpath),
 				i18nsettings
 			if (manifest["sap.app"]) {
 				i18nsettings = manifest["sap.app"] && manifest["sap.app"].i18n;

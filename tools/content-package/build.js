@@ -19,7 +19,7 @@ module.exports.build = function (dir) {
     return oNode ? oNode : "";
   }
 
-  function createCDMRole(pack, cdmBusinessApps, i18nPath) {
+  function createCDMRole(pack, aCDMEntities, i18nPath) {
     return {
       _version: "3.0",
       identification: {
@@ -28,7 +28,8 @@ module.exports.build = function (dir) {
         entityType: "role"
       },
       payload: {
-        apps: cdmBusinessApps.map(app => ({
+        //TODO: Filter for Apps
+        apps: aCDMEntities.map(app => ({
           id: app.identification.id
         }))
       },
@@ -37,14 +38,11 @@ module.exports.build = function (dir) {
   }
 
   function createCDMBusinessAppForCard(cardManifest, i18nPath) {
-    var vizConfig = cardManifest;
-    vizConfig["sap.artifact"] = {
-      artifact: cardManifest["sap.app"].id
-    };
+    var appId = cardManifest["sap.app"].id;
     return {
       _version: "3.2",
       identification: {
-        id: cardManifest["sap.app"].id,
+        id: appId,
         title: cardManifest["sap.app"].title,
         entityType: "businessapp",
       },
@@ -52,7 +50,10 @@ module.exports.build = function (dir) {
         visualizations: {
           cardViz: {
             vizType: "sap.card",
-            vizConfig: vizConfig
+            vizConfig: cardManifest,
+            vizResources: {
+              artifactId: appId
+            }
           }
         }
       },
@@ -72,7 +73,7 @@ module.exports.build = function (dir) {
         .filter(entry => i18nKeys.includes(entry[0]))
         .forEach(entry => entries[entry[0]] = entry[1]);
       return {
-        locale: file.slice("i18n_".length, file.length - ".properties".length),
+        locale: file.slice("i18n_".length, file.length - ".properties".length).replace("_", "-"),
         textDictionary: entries
       }
     });
@@ -143,7 +144,7 @@ module.exports.build = function (dir) {
     }
   }
 
-  function buildContent(name, config, aCDMCards) {
+  function buildContent(name, config, aCDMEntities) {
     if (!config.src.build) {
       util.log.fancy("Nothing to build for " + name);
       return;
@@ -179,16 +180,17 @@ module.exports.build = function (dir) {
       }
 
       var manifestPath = path.join(baseDir, "build", config.src.path, config.src.manifest),
-        manifestRoot = manifestPath.dirname,
+        manifestRoot = path.dirname(manifestPath),
         manifest = util.json.fromFile(manifestPath),
         sourceDir = path.join(baseDir, "build", config.src.path, (config.src.manifest.replace("manifest.json", ""))),
+        i18nDir = path.join(manifestRoot, "i18n"),
         artifactManifest;
 
       //creating artifact.json
       if (manifest["sap.app"] && manifest["sap.app"].type === "card") {
 
         //create cdm content for card
-        //aCDMCards.push(createCDMBusinessAppForCard(manifest, path.join(tmpPackagePath, manifestRoot, manifest["sap.app"].i18n)));
+        aCDMEntities.push(createCDMBusinessAppForCard(manifest, i18nDir));
 
         artifactManifest = {
           _version: "1.27.0",
@@ -196,7 +198,8 @@ module.exports.build = function (dir) {
         };
         console.log("Card found: Deriving sap.artifact section");
         artifactManifest["sap.artifact"] = manifest["sap.app"];
-        var cardi18nFolder = path.join.apply(null, (sourceDir + "/" + manifest["sap.app"].i18n).split("/"));
+        var cardi18nFolder = path.join(sourceDir, path.dirname(manifest["sap.app"].i18n));
+
         //i18n is copied always in the i18n folder
         artifactManifest["sap.artifact"].i18n = "i18n/i18n.properties";
 
@@ -219,10 +222,10 @@ module.exports.build = function (dir) {
       util.json.toFile(path.join(targetDir, "manifest.json"), artifactManifest);
 
       //copy i18n files
-      console.log("Copy i18n folder");
-
+      console.log("Copy i18n folder " + cardi18nFolder);
       if (fs.pathExistsSync(cardi18nFolder)) {
         fs.copySync(cardi18nFolder, path.join(targetDir, "i18n"));
+        console.log("------- Copy i18n folder: " + path.join(targetDir, "i18n"));
         //process the i18n
         util.i18n.process(path.join(targetDir, "manifest.json"));
       }
@@ -272,7 +275,7 @@ module.exports.build = function (dir) {
   }
 
   var aContentInfo = [],
-    aCDMCards = []
+    aCDMEntities = []
 
   for (var n in contentConfig) {
     console.log("Create content " + n + "...");
@@ -281,7 +284,7 @@ module.exports.build = function (dir) {
       throw new Error("Unknown artifact type " + type + ". Should be " + validTypes.join(","));
     }
 
-    buildContent(n, contentConfig[n], aCDMCards);
+    buildContent(n, contentConfig[n], aCDMEntities);
   }
 
   //add the contentInfo to main manifest
@@ -289,15 +292,17 @@ module.exports.build = function (dir) {
     pack = getJSONPathValue("sap.package", man);
 
 
-  //add cdm entities
-  // pack.cdmEntities = [
-  //   createCDMRole(pack, aCDMCards, path.join(mainPackagePath, "i18n")),
-  //   ...aCDMCards
-  // ];
   pack.contents = aContentInfo;
 
-  console.log("Saving /package/manifest.json");
+  //add cdm entities
+  pack.cdmEntities = [
+    createCDMRole(pack, aCDMEntities, path.join(root, "i18n")),
+    ...aCDMEntities
+  ];
+
+  console.log("Save /package/manifest.json");
   util.json.toFile(path.join(mainPackagePath, "manifest.json"), man);
+
 
   if (fs.pathExistsSync(path.join(root, "i18n"))) {
     console.log("Copy i18n folder");
@@ -305,6 +310,8 @@ module.exports.build = function (dir) {
     //process the i18n
     util.i18n.process(path.join(mainPackagePath, "manifest.json"));
   }
+
+  util.json.toFile(path.join(mainPackagePath, "manifest.json"), man);
 
   console.log("Creating package.zip ");
   util.zip.folder(path.join(root, "package.zip"), path.join(root, "package"));
