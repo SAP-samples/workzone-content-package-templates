@@ -184,7 +184,8 @@ module.exports.build = function (dir) {
         manifest = util.json.fromFile(manifestPath),
         sourceDir = path.join(baseDir, "build", config.src.path, (config.src.manifest.replace("manifest.json", ""))),
         i18nDir = path.join(manifestRoot, "i18n"),
-        artifactManifest;
+        artifactManifest,
+        i18nFolder
 
       //creating artifact.json
       if (manifest["sap.app"] && manifest["sap.app"].type === "card") {
@@ -198,7 +199,7 @@ module.exports.build = function (dir) {
         };
         console.log("Card found: Deriving sap.artifact section");
         artifactManifest["sap.artifact"] = manifest["sap.app"];
-        var cardi18nFolder = path.join(sourceDir, path.dirname(manifest["sap.app"].i18n));
+        i18nFolder = path.join(sourceDir, path.dirname(manifest["sap.app"].i18n));
 
         //i18n is copied always in the i18n folder
         artifactManifest["sap.artifact"].i18n = "i18n/i18n.properties";
@@ -216,16 +217,18 @@ module.exports.build = function (dir) {
           _generator: "cpkg-project-template",
           "sap.artifact": manifest["sap.artifact"]
         }
+        artifactManifest["sap.artifact"].i18n = "i18n/i18n.properties";
+        i18nFolder = path.join(sourceDir, path.dirname(manifest["sap.artifact"].i18n))
       }
 
       console.log("Writing artifact manifest: " + targetDir + "/manifest.json");
       util.json.toFile(path.join(targetDir, "manifest.json"), artifactManifest);
 
       //copy i18n files
-      console.log("Copy i18n folder " + cardi18nFolder);
-      if (fs.pathExistsSync(cardi18nFolder)) {
-        fs.copySync(cardi18nFolder, path.join(targetDir, "i18n"));
-        console.log("------- Copy i18n folder: " + path.join(targetDir, "i18n"));
+      console.log("Copy i18n folder " + i18nFolder);
+      if (fs.pathExistsSync(i18nFolder)) {
+        fs.copySync(i18nFolder, path.join(targetDir, "i18n"));
+        console.log("Copy i18n folder: " + path.join(targetDir, "i18n"));
         //process the i18n
         util.i18n.process(path.join(targetDir, "manifest.json"));
       }
