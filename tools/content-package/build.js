@@ -73,7 +73,7 @@ module.exports.build = function (dir) {
         .filter(entry => i18nKeys.includes(entry[0]))
         .forEach(entry => entries[entry[0]] = entry[1]);
       return {
-        locale: file.slice("i18n_".length, file.length - ".properties".length).replace("_", "-"),
+        locale: file.slice("i18n_".length, file.length - ".properties".length).replace(/_/gi, "-"),
         textDictionary: entries
       }
     });
