@@ -33,7 +33,7 @@ module.exports.build = function (dir) {
           id: app.identification.id
         }))
       },
-      texts: createCDMTextsFromI18N(i18nPath, [pack.title])
+      texts: createCDMTextsFromI18N(i18nPath, [pack.title]) || []
     }
   }
 
@@ -62,21 +62,25 @@ module.exports.build = function (dir) {
   }
 
   function createCDMTextsFromI18N(i18nPath, i18nKeys) {
-    i18nKeys = i18nKeys.filter(key => util.i18n.isKey(key))   // take real i18n refs only and ignore text literals
-      .map(key => util.i18n.stripKey(key));  // strip off {{}}
-    var files = util.readdir(i18nPath);
-    var texts = files.map(file => {
-      var entries = {};
-      util.readfile(path.join(i18nPath, file))
-        .split(/\r?\n/)
-        .map(line => line.split("="))
-        .filter(entry => i18nKeys.includes(entry[0]))
-        .forEach(entry => entries[entry[0]] = entry[1]);
-      return {
-        locale: file.slice("i18n_".length, file.length - ".properties".length).replace(/_/gi, "-"),
-        textDictionary: entries
-      }
-    });
+    try {
+      i18nKeys = i18nKeys.filter(key => util.i18n.isKey(key))   // take real i18n refs only and ignore text literals
+        .map(key => util.i18n.stripKey(key));  // strip off {{}}
+      var files = util.readdir(i18nPath);
+      var texts = files.map(file => {
+        var entries = {};
+        util.readfile(path.join(i18nPath, file))
+          .split(/\r?\n/)
+          .map(line => line.split("="))
+          .filter(entry => i18nKeys.includes(entry[0]))
+          .forEach(entry => entries[entry[0]] = entry[1]);
+        return {
+          locale: file.slice("i18n_".length, file.length - ".properties".length).replace(/_/gi, "-"),
+          textDictionary: entries
+        }
+      });
+    } catch (ex) {
+      return [];
+    }
     return texts;
   }
 
