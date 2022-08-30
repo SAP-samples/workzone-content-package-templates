@@ -203,8 +203,13 @@ module.exports.build = function (dir) {
         };
         console.log("Card found: Deriving sap.artifact section");
         artifactManifest["sap.artifact"] = manifest["sap.app"];
-        i18nFolder = path.join(sourceDir, path.dirname(manifest["sap.app"].i18n));
 
+        if(typeof manifest["sap.app"].i18n ==="string"){
+          i18nFolder = path.join(sourceDir, path.dirname(manifest["sap.app"].i18n));
+        }
+        else {
+          i18nFolder = path.join(sourceDir, path.dirname(manifest["sap.app"].i18n.bundleUrl));
+        }
         //i18n is copied always in the i18n folder
         artifactManifest["sap.artifact"].i18n = "i18n/i18n.properties";
 
