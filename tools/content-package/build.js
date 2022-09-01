@@ -19,40 +19,82 @@ module.exports.build = function (dir) {
     return oNode ? oNode : "";
   }
 
+  function createCDMSpace(pack, aCDMEntities, i18nPath) {
+    return {
+      //https://github.wdf.sap.corp/Portal-CF/cdm-schema/blob/master/raw/core/space.json
+      _version: "3.1.0",
+      identification: {
+        id: `${pack.id}.space`,
+        title: pack.title,
+        entityType: "space"
+      },
+      payload: {
+        contentNodes: aCDMEntities.flatMap((wp) => {
+          if (wp && wp.identification && wp.identification.id && wp.identification.entityType && wp.identification.entityType === "workpage") {
+            return {
+              type: "workpage",
+              id: wp.identification.id
+            }
+          } else return []
+        })
+      },
+      texts: createCDMTextsFromI18N(i18nPath, [pack.title], {
+        locale: "",
+        textDictionary: {
+          description: "Workpage Description"
+        }
+      })
+    }
+  }
+
   function createCDMRole(pack, aCDMEntities, i18nPath) {
     return {
-      _version: "3.0",
+      //https://github.wdf.sap.corp/Portal-CF/cdm-schema/blob/master/raw/core/role.json
+      _version: "3.2.0",
       identification: {
-        id: pack.id,
+        id: `${pack.id}.role`,
         title: pack.title,
         entityType: "role"
       },
       payload: {
-        //TODO: Filter for Apps
-        apps: aCDMEntities.map(app => {
-          if (app && app.identification && app.identification.id) {
+        spaces: [{
+          id: `${pack.id}.space`,
+        }],
+        apps: aCDMEntities.flatMap((app) => {
+          if (app && app.identification && app.identification.id && app.identification.entityType && app.identification.entityType === "businessapp") {
             return {
               id: app.identification.id
             }
-          }
+          } else return []
         })
       },
-      texts: createCDMTextsFromI18N(i18nPath, [pack.title])
+      texts: createCDMTextsFromI18N(i18nPath, [pack.title], {
+        locale: "",
+        textDictionary: {
+          description: "Business App Description"
+        }
+      })
     }
   }
 
   function createCDMBusinessAppForCard(cardManifest, i18nPath) {
-    var appId = cardManifest["sap.app"].id;
-    return {
-      _version: "3.2",
+
+    var appId = `${cardManifest["sap.app"].id}.app`;
+    var vizId = `${cardManifest["sap.app"].id}.viz`;
+    var allKeys = util.i18n.allKeys(cardManifest);
+    var result = {
+      _version: "3.2.0",
       identification: {
         id: appId,
         title: cardManifest["sap.app"].title,
         entityType: "businessapp",
+        // "description" to be deleted, only necessary because of bugs https://jira.tools.sap/browse/DWPBUGS-2514 and
+        // https://jira.tools.sap/browse/DWPBUGS-2515
+        description: "{{description}}"
       },
       payload: {
         visualizations: {
-          cardViz: {
+          [vizId]: {
             vizType: "sap.card",
             vizConfig: cardManifest,
             vizResources: {
@@ -60,12 +102,20 @@ module.exports.build = function (dir) {
             }
           }
         }
-      },
-      texts: createCDMTextsFromI18N(i18nPath, util.i18n.allKeys(cardManifest))
+      }
     }
+
+    result.texts = createCDMTextsFromI18N(i18nPath, allKeys, {
+      locale: "",
+      textDictionary: {
+        description: "Business App Description"
+      }
+    });
+
+    return result;
   }
 
-  function createCDMTextsFromI18N(i18nPath, i18nKeys) {
+  function createCDMTextsFromI18N(i18nPath, i18nKeys, fallbackObject) {
     try {
       i18nKeys = i18nKeys.filter(key => util.i18n.isKey(key))   // take real i18n refs only and ignore text literals
         .map(key => util.i18n.stripKey(key));  // strip off {{}}
@@ -82,8 +132,18 @@ module.exports.build = function (dir) {
           textDictionary: entries
         }
       });
+      if (texts.length === 0) {
+        texts.push(
+          fallbackObject
+        );
+      }
     } catch (ex) {
-      return [];
+      return [{
+        locale: "",
+        textDictionary: {
+          description: "Business App Description"
+        }
+      }];
     }
   }
 
@@ -318,6 +378,7 @@ module.exports.build = function (dir) {
 
   //add cdm entities
   pack.cdmEntities = [
+    createCDMSpace(pack, aCDMEntities, path.join(root, "i18n")),
     createCDMRole(pack, aCDMEntities, path.join(root, "i18n")),
     ...aCDMEntities
   ];
