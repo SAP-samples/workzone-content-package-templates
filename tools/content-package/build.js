@@ -7,7 +7,7 @@ module.exports.build = function (dir) {
     propertiesReader = require("properties-reader"),
     businessHubBuild = process.argv.slice(2)[0] === "-b";
 
-  var validTypes = ["card", "workflow", "workspace-template", "workspace", "homepage", "workpage"];
+  var validTypes = ["card", "workflow", "workspace-template", "workspace", "homepage", "workpage", "space", "role"];
 
   function getJSONPathValue(sPath, o) {
     var a = sPath.split("/");
@@ -17,64 +17,6 @@ module.exports.build = function (dir) {
       oNode = oNode[a[i]];
     }
     return oNode ? oNode : "";
-  }
-
-  function createCDMSpace(pack, aCDMEntities, i18nPath) {
-    return {
-      //https://github.wdf.sap.corp/Portal-CF/cdm-schema/blob/master/raw/core/space.json
-      _version: "3.1.0",
-      identification: {
-        id: `${pack.id}.space`,
-        title: pack.title,
-        entityType: "space"
-      },
-      payload: {
-        contentNodes: aCDMEntities.flatMap((wp) => {
-          if (wp && wp.identification && wp.identification.id && wp.identification.entityType && wp.identification.entityType === "workpage") {
-            return {
-              type: "workpage",
-              id: wp.identification.id
-            }
-          } else return []
-        })
-      },
-      texts: createCDMTextsFromI18N(i18nPath, [pack.title], {
-        locale: "",
-        textDictionary: {
-          description: "Workpage Description"
-        }
-      })
-    }
-  }
-
-  function createCDMRole(pack, aCDMEntities, i18nPath) {
-    return {
-      //https://github.wdf.sap.corp/Portal-CF/cdm-schema/blob/master/raw/core/role.json
-      _version: "3.2.0",
-      identification: {
-        id: `${pack.id}.role`,
-        title: pack.title,
-        entityType: "role"
-      },
-      payload: {
-        spaces: [{
-          id: `${pack.id}.space`,
-        }],
-        apps: aCDMEntities.flatMap((app) => {
-          if (app && app.identification && app.identification.id && app.identification.entityType && app.identification.entityType === "businessapp") {
-            return {
-              id: app.identification.id
-            }
-          } else return []
-        })
-      },
-      texts: createCDMTextsFromI18N(i18nPath, [pack.title], {
-        locale: "",
-        textDictionary: {
-          description: "Business App Description"
-        }
-      })
-    }
   }
 
   function createCDMBusinessAppForCard(cardManifest, i18nPath) {
@@ -137,6 +79,7 @@ module.exports.build = function (dir) {
           fallbackObject
         );
       }
+      return texts;
     } catch (ex) {
       return [{
         locale: "",
@@ -214,8 +157,22 @@ module.exports.build = function (dir) {
   function buildContent(name, config, aCDMEntities) {
 
     util.log.fancy("Building " + config.type);
-    if (config.type === "workpage") {
-      aCDMEntities.push(util.json.fromFile(path.join(config.src.from, config.src.content)))
+    if (config.type === "workpage" || config.type === "role" || config.type === "space") {
+      var contentPath = path.join(config.src.from, config.src.content);
+      var i18nPath = path.join(config.src.from, "i18n");
+      var content = util.json.fromFile(contentPath);
+      console.log("--------------------");
+      console.log(i18nPath);
+      console.log(content);
+      console.log(util.i18n.allKeys(content));
+      content.texts = createCDMTextsFromI18N(i18nPath, util.i18n.allKeys(content), {
+        locale: "",
+        textDictionary: {
+          description: "Description"
+        }
+      });
+      aCDMEntities.push(content);
+      console.log(content);
     } else {
       if (!config.src.build) {
         util.log.fancy("Nothing to build for " + name);
@@ -378,8 +335,6 @@ module.exports.build = function (dir) {
 
   //add cdm entities
   pack.cdmEntities = [
-    createCDMSpace(pack, aCDMEntities, path.join(root, "i18n")),
-    createCDMRole(pack, aCDMEntities, path.join(root, "i18n")),
     ...aCDMEntities
   ];
 
