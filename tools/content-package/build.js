@@ -161,10 +161,6 @@ module.exports.build = function (dir) {
       var contentPath = path.join(config.src.from, config.src.content);
       var i18nPath = path.join(config.src.from, "i18n");
       var content = util.json.fromFile(contentPath);
-      console.log("--------------------");
-      console.log(i18nPath);
-      console.log(content);
-      console.log(util.i18n.allKeys(content));
       content.texts = createCDMTextsFromI18N(i18nPath, util.i18n.allKeys(content), {
         locale: "",
         textDictionary: {
@@ -172,7 +168,6 @@ module.exports.build = function (dir) {
         }
       });
       aCDMEntities.push(content);
-      console.log(content);
     } else {
       if (!config.src.build) {
         util.log.fancy("Nothing to build for " + name);
