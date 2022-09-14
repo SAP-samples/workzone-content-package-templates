@@ -13,10 +13,10 @@ var util = {
 	},
 	zip: {
 		folder: function (targetfile, sourcefolder, folder = "*") {
-			if (process.platform === 'linux') {
-				util.spawn.sync("zip -r --quiet --recurse-paths " + targetfile + " " + folder, sourcefolder);
-				return;
-			}
+			// if (process.platform === 'linux') {
+			// 	util.spawn.sync("zip -r --quiet --recurse-paths " + targetfile + " " + folder, sourcefolder);
+			// 	return;
+			// }
 			util.spawn.sync("bestzip " + targetfile + " " + folder, sourcefolder);
 		}
   },
