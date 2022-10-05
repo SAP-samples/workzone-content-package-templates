@@ -313,6 +313,8 @@ module.exports.build = function (dir) {
   for (var n in contentConfig) {
     console.log("Create content " + n + "...");
     var type = contentConfig[n].type;
+    contentConfig[n].src.path = contentConfig[n].src.path || "./";
+    contentConfig[n].src.build = contentConfig[n].src.build || "";
     if (validTypes.indexOf(type) === -1) {
       throw new Error("Unknown artifact type " + type + ". Should be " + validTypes.join(","));
     } else {
