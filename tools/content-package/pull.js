@@ -25,8 +25,8 @@ module.exports.pull = function (dir, local) {//load content.json
 
   function pullContent(name, config) {
     if (config.src) {
-      contentConfig[n].src.path = contentConfig[n].src.path || "./";
-      contentConfig[n].src.build = contentConfig[n].src.build || "";
+      config.src.path = contentConfig[n].src.path || "./";
+      config.src.build = contentConfig[n].src.build || "";
       config.src.path = config.src.path.replace("./", "");
       util.log.fancy("Pull content for " + n + ": " + (config.src.git || config.src.from) + (config.src.git && config.src.branch ? " on branch/label " + config.src.branch || "master" : ""));
       var baseDir = path.join(contentsDir, name);
