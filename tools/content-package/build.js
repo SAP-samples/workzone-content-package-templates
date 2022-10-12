@@ -7,7 +7,7 @@ module.exports.build = function (dir) {
     propertiesReader = require("properties-reader"),
     businessHubBuild = process.argv.slice(2)[0] === "-b";
 
-  var validTypes = ["card", "workflow", "workspace-template", "workspace", "homepage", "workpage", "space", "role"];
+  var validTypes = ["card", "workflow", "workspace-template", "workspace", "homepage", "workpage", "space", "role", "businessapp", "urltemplate"];
 
   function getJSONPathValue(sPath, o) {
     var a = sPath.split("/");
@@ -157,7 +157,11 @@ module.exports.build = function (dir) {
   function buildContent(name, config, aCDMEntities) {
 
     util.log.fancy("Building " + config.type);
-    if (config.type === "workpage" || config.type === "role" || config.type === "space") {
+    if (config.type === "workpage" ||
+      config.type === "role" ||
+      config.type === "space" ||
+      config.type === "businessapp" ||
+      config.type === "urltemplate") {
       var contentPath = path.join(config.src.from, config.src.content);
       var i18nPath = path.join(config.src.from, "i18n");
       var content = util.json.fromFile(contentPath);
