@@ -230,7 +230,7 @@ module.exports.build = function (dir) {
           if (typeof manifest["sap.app"].i18n === "string") {
             i18nFolder = path.join(sourceDir, path.dirname(manifest["sap.app"].i18n));
           }
-          else {
+          else if (typeof manifest["sap.app"].i18n === "object") {
             i18nFolder = path.join(sourceDir, path.dirname(manifest["sap.app"].i18n.bundleUrl));
           }
 
