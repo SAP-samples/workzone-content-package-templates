@@ -225,7 +225,8 @@ module.exports.build = function (dir) {
             _generator: "cpkg-project-template"
           };
           console.log("Card found: Deriving sap.artifact section");
-          artifactManifest["sap.artifact"] = manifest["sap.app"];
+          //copy the sap.app section
+          artifactManifest["sap.artifact"] = JSON.parse(JSON.stringify(manifest["sap.app"]));
 
           if (typeof manifest["sap.app"].i18n === "string") {
             i18nFolder = path.join(sourceDir, path.dirname(manifest["sap.app"].i18n));
