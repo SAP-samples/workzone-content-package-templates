@@ -6,13 +6,22 @@ var util = {
 	spawn: {
 		sync: function (command, folder, message) {
 			var spawn = spawnSync(command, { cwd: folder, shell: true, stdio: "inherit" });
+			console.log("status");
 			if (spawn.status) {
 				throw new Error(message);
 			}
+		},
+    Advancedsync: function (command, folder, oEnv) {
+			var spawn = spawnSync(command, { cwd: folder, shell: true, stdio: "inherit", env: oEnv });
+        return spawn;
 		}
 	},
 	zip: {
 		folder: function (targetfile, sourcefolder, folder = "*") {
+			if (process.platform === 'linux') {
+				util.spawn.sync("zip -r --quiet --recurse-paths " + targetfile + " " + folder, sourcefolder);
+				return;
+			}
 			util.spawn.sync("bestzip " + targetfile + " " + folder, sourcefolder);
 		}
   },
@@ -26,6 +35,9 @@ var util = {
     }
     return files;
   },
+	relativeDir: function (dir) {
+		return path.basename(dir).toLowerCase() === 'scripts' ? "..":"."
+	},
   readfile: function (filename) {
     var file;
     try {
