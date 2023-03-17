@@ -1,22 +1,26 @@
 {
   "name": "sap-workzone-cpkg-tools",
   "description": "Build tools to create content packages and their content artifacts",
-  "version": "1.0.0",
+  "version": "1.0.10",
   "repository": {
     "type": "git",
     "url": "https://github.com:SAP-samples/workzone-content-package-templates.git",
     "directory": "tools"
   },
+  "publishConfig": {
+    "registry": "https://int.repositories.cloud.sap/artifactory/api/npm/content-build-tool/"
+  },
   "main": "index.js",
   "author": "SAP SE",
   "license": "ISC",
   "dependencies": {
-    "glob": "8.0.3",
-    "rimraf": "3.0.2",
-    "fs-extra": "10.1.0",
-    "properties-reader": ">=2.2.0",
-    "handlebars": "4.7.7",
+    "@ui5/cli": "2.14.14",
     "bestzip": "2.2.1",
-    "@ui5/cli": "2.14.14"
+    "fs-extra": "10.1.0",
+    "glob": "8.0.3",
+    "handlebars": "4.7.7",
+    "properties-reader": ">=2.2.0",
+    "rimraf": "3.0.2",
+    "jszip": "3.7.0"
   }
 }

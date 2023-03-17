@@ -3,19 +3,33 @@ module.exports.build = function (dir) {
     util = require("../util/util.js"),
     rimraf = require("rimraf"),
     fs = require("fs-extra"),
-    packagejson = util.json.fromFile(path.join(dir, "..", "package.json")),
+    root = path.join(dir, util.relativeDir(dir)),
+    packagejson = util.json.fromFile(path.join(root, "package.json")),
     name = packagejson.name,
     ui5BuildParams = packagejson.ui5 && packagejson.ui5.buildParams ? packagejson.ui5.buildParams : "",
-    root = path.join(dir, ".."),
     dist = path.join(root, "dist"),
     out = path.join(root, name + ".zip");
 
-  util.log.fancy("Building Card Package..." + dir + "/src");
+  util.log.fancy("Building Card Package: " + dir + "/src");
   console.log(" - Clean files and folders");
 
   rimraf.sync(dist);
 
   fs.removeSync(out);
+
+  //if ui5 cli does not exist, install it.
+  var ret = util.spawn.Advancedsync("which ui5", root, process.env);
+  if (ret.status) {
+      var ui5path = path.join(__dirname, "..", "..", "..", "node_modules", ".bin", "ui5");
+      console.log(ui5path);
+      if (!fs.existsSync(ui5path)) {
+          console.log("install @ui5/cli");
+          util.spawn.sync("npm install @ui5/cli@2.14.14", path.join(__dirname, "..", "..", ".."), "fail to install ui5");
+      }
+      if (fs.existsSync(ui5path)) {
+          process.env.PATH += ":"+path.dirname(ui5path);
+      }
+  }
 
   console.log(" - Create dist folder and content");
 

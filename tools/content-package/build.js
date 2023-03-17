@@ -154,16 +154,15 @@ module.exports.build = function (dir) {
     }
   }
 
-  function buildContent(name, config, aCDMEntities) {
-
-    util.log.fancy("Building " + config.type);
+  function buildContent(name, config) {
+    util.log.fancy("Building artifact name: " + name + " type:" + config.type);
     if (config.type === "workpage" ||
       config.type === "role" ||
       config.type === "space" ||
       config.type === "businessapp" ||
       config.type === "urltemplate") {
-      var contentPath = path.join(config.src.from, config.src.content);
-      var i18nPath = path.join(config.src.from, "i18n");
+      var contentPath = path.join(root, config.src.from, config.src.content);
+      var i18nPath = path.join(root, config.src.from, "i18n");
       var content = util.json.fromFile(contentPath);
       content.texts = createCDMTextsFromI18N(i18nPath, util.i18n.allKeys(content), {
         locale: "",
@@ -173,44 +172,57 @@ module.exports.build = function (dir) {
       });
       aCDMEntities.push(content);
     } else {
-      if (!config.src.build) {
-        util.log.fancy("Nothing to build for " + name);
-        return;
-      }
-      util.log.fancy("Building " + name);
       if (config.src.git || config.src.from) {
+        /*
+        contentDir = /Top/__contents
+        baseDir = /Top/__contents/card-sample
+        targetDir = /Top/package/artifacts/card-sample
+         */
         var contentsDir = path.join(root, "__contents"),
           baseDir = path.join(contentsDir, name),
-          aRun = config.src.build.split(" && "),
           targetDir = path.join(mainArtifactsPath, name),
           targetBusinessHubTargetDir = path.join(businessHubArtifactsPath, name);
-        for (var i = 0; i < aRun.length; i++) {
-          console.log("Run build in: " + path.join(baseDir, "build", config.src.path));
-          util.spawn.sync(aRun[i], path.join(baseDir, "build", config.src.path), aRun[i] + " cannot be executed.\n");
+        
+        if (config.src.build) {
+          // User specified build
+          aRun =  config.src.build.split(" && ")
+          for (var i = 0; i < aRun.length; i++) {
+            console.log("Run build in: " + path.join(baseDir, "build"));
+            util.spawn.sync(aRun[i], path.join(baseDir, "build"), aRun[i] + " cannot be executed.\n");
+          }
+        } else {
+          // Use Default Build
+          var command = "node  " + path.join(__dirname, "artifactBuild.js") + " " + path.join(baseDir, "build") + " " +  config.type.toLowerCase();
+          console.log("Run build in: " + command);
+          util.spawn.sync(command, path.join(baseDir, "build"), command + "node  cannot be executed.\n");
         }
 
+        util.log.fancy("Copy artifact name: " + name + " type:" + config.type);
         //copy the result package
-        if (config.src.package) {
-          var packageSrcPath = path.join(baseDir, "build", config.src.path, config.src.package),
-            packageTargetPath = path.join(targetDir, "data.zip"),
-            packageBusinessHubTargetTargetPath = path.join(targetBusinessHubTargetDir, "data.zip");
-          if (!fs.existsSync(packageSrcPath)) {
-            throw new Error("Error: " + packageSrcPath + " not found");
-          }
-          console.log("Package definition found: " + packageSrcPath);
-          console.log("Copy package to target dir: " + packageTargetPath);
-          fs.mkdirSync(targetDir);
-          fs.copySync(packageSrcPath, packageTargetPath);
-          if (businessHubBuild) {
-            fs.copySync(packageSrcPath, packageBusinessHubTargetTargetPath);
-          }
+        //calcuate the zip file name
+        var artifactPackagejson = util.json.fromFile(path.join(baseDir, "build", "package.json"));
+        var packageFileName = artifactPackagejson.name + ".zip"
+        //packageSrcPath = /Top/__contents/card-sample/build/xxx.zip
+        //packageTargetPath = /Top/package/artifacts/card-sample/xxx.zip
+        var packageSrcPath = path.join(baseDir, "build", packageFileName),
+          packageTargetPath = path.join(targetDir, "data.zip"),
+          packageBusinessHubTargetTargetPath = path.join(targetBusinessHubTargetDir, "data.zip");
+        if (!fs.existsSync(packageSrcPath)) {
+          throw new Error("Error: " + packageSrcPath + " not found");
         }
-
-        var manifestPath = path.join(baseDir, "build", config.src.path, config.src.manifest),
-          manifestRoot = path.dirname(manifestPath),
+        console.log("Package definition found: " + packageSrcPath);
+        console.log("Copy package to target dir: " + packageTargetPath);
+        fs.mkdirSync(targetDir);
+        fs.copySync(packageSrcPath, packageTargetPath);
+        if (businessHubBuild) {
+          fs.copySync(packageSrcPath, packageBusinessHubTargetTargetPath);
+        }
+        //manifestPath = /Top/__contents/card-sample/build/src/manifest
+        //manifestRoot = /Top/__contents/card-sample/build/src
+        var manifestPath = path.join(baseDir, "build", "src", "manifest.json"),
+          sourceDir = path.join(baseDir, "build", "src"),
           manifest = util.json.fromFile(manifestPath),
-          sourceDir = path.join(baseDir, "build", config.src.path, (config.src.manifest.replace("manifest.json", ""))),
-          i18nDir = path.join(manifestRoot, "i18n"),
+          i18nDir = path.join(sourceDir, "i18n"),
           artifactManifest,
           i18nFolder
 
@@ -225,18 +237,21 @@ module.exports.build = function (dir) {
             _generator: "cpkg-project-template"
           };
           console.log("Card found: Deriving sap.artifact section");
+          
           //copy the sap.app section
           artifactManifest["sap.artifact"] = JSON.parse(JSON.stringify(manifest["sap.app"]));
 
-          if (typeof manifest["sap.app"].i18n === "string") {
-            i18nFolder = path.join(sourceDir, path.dirname(manifest["sap.app"].i18n));
+          if (manifest["sap.app"].i18n) {
+            if (typeof manifest["sap.app"].i18n === "string") {
+              i18nFolder = path.join(sourceDir, path.dirname(manifest["sap.app"].i18n));
+            }
+            else if (typeof manifest["sap.app"].i18n === "object") {
+              i18nFolder = path.join(sourceDir, path.dirname(manifest["sap.app"].i18n.bundleUrl));
+            }
+  
+            //i18n is copied always in the i18n folder
+            artifactManifest["sap.artifact"].i18n = "i18n/i18n.properties";
           }
-          else if (typeof manifest["sap.app"].i18n === "object") {
-            i18nFolder = path.join(sourceDir, path.dirname(manifest["sap.app"].i18n.bundleUrl));
-          }
-
-          //i18n is copied always in the i18n folder
-          artifactManifest["sap.artifact"].i18n = "i18n/i18n.properties";
 
           if (artifactManifest["sap.artifact"].applicationVersion) {
             artifactManifest["sap.artifact"].artifactVersion = artifactManifest["sap.artifact"].applicationVersion;
@@ -251,8 +266,11 @@ module.exports.build = function (dir) {
             _generator: "cpkg-project-template",
             "sap.artifact": manifest["sap.artifact"]
           }
-          artifactManifest["sap.artifact"].i18n = "i18n/i18n.properties";
-          i18nFolder = path.join(sourceDir, path.dirname(manifest["sap.artifact"].i18n))
+          if (manifest["sap.artifact"].i18n) {
+            artifactManifest["sap.artifact"].i18n = "i18n/i18n.properties";
+            // i18nFolder = /Top/__contents/card-sample/build/src/i18nfolder
+            i18nFolder = path.join(sourceDir, path.dirname(manifest["sap.artifact"].i18n))
+          }  
         }
 
         console.log("Writing artifact manifest: " + targetDir + "/manifest.json");
@@ -282,7 +300,16 @@ module.exports.build = function (dir) {
 
   util.log.fancy("Start Build");
 
-  var root = path.join(dir, ".."),
+  /* 
+    If running from Content Package scripts/xx.js, dir is /Top/scripts. 
+    If running from BAS, dir will be the root folder like /Top
+    root = /Top
+    mainPackagePath = /Top/package
+    mainArtifactsPath = /Top/package/artifacts
+    businessHubPath = /Top/businesshub
+    businessHubArtifactsPath = /Top/businesshub/Artifacts
+  */
+  var root = path.join(dir, util.relativeDir(dir)),
     mainPackagePath = path.join(root, "package"),
     mainArtifactsPath = path.join(root, "package", "artifacts"),
     businessHubPath = path.join(root, "businesshub"),
@@ -306,6 +333,7 @@ module.exports.build = function (dir) {
   console.log("Done");
 
   //creating content artifacts and collect info
+  //contentConfig is /Top/content.json
   var contentConfig = util.json.fromFile(path.join(root, "content.json"));
   if (Object.keys(contentConfig).length === 0) {
     console.log("Error: content.json does not contain any entries.");
@@ -316,19 +344,19 @@ module.exports.build = function (dir) {
     aCDMEntities = []
 
   for (var n in contentConfig) {
-    console.log("Create content " + n + "...");
     var type = contentConfig[n].type;
     contentConfig[n].src.path = contentConfig[n].src.path || "./";
     contentConfig[n].src.build = contentConfig[n].src.build || "";
     if (validTypes.indexOf(type) === -1) {
       throw new Error("Unknown artifact type " + type + ". Should be " + validTypes.join(","));
     } else {
-      buildContent(n, contentConfig[n], aCDMEntities);
+      buildContent(n, contentConfig[n]);
     }
 
   }
 
   //add the contentInfo to main manifest
+  //main is Top/manifest.json
   var man = util.json.fromFile(path.join(root, "manifest.json")),
     pack = getJSONPathValue("sap.package", man);
 
