@@ -13,7 +13,8 @@
     "properties-reader": ">=2.2.0",
     "handlebars": "4.7.7",
     "bestzip": "2.2.1",
-    "@ui5/cli": "2.14.14"
+    "@ui5/cli": "2.14.14",
+    "jszip": "3.7.0"
   },
   "author": "SAP SE",
   "license": "ISC"
