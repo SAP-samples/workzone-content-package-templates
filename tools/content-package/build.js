@@ -200,8 +200,13 @@ module.exports.build = function (dir) {
         util.log.fancy("Copy artifact name: " + name + " type:" + config.type);
         //copy the result package
         //calcuate the zip file name
-        var artifactPackagejson = util.json.fromFile(path.join(baseDir, "build", "package.json"));
-        var packageFileName = artifactPackagejson.name + ".zip"
+        var packageFileName;
+        if (config.src.package) {
+          packageFileName = path.join(config.src.path, config.src.package);
+        } else {
+          var artifactPackagejson = util.json.fromFile(path.join(baseDir, "build", "package.json"));
+          packageFileName = artifactPackagejson.name + ".zip"
+        }  
         //packageSrcPath = /Top/__contents/card-sample/build/xxx.zip
         //packageTargetPath = /Top/package/artifacts/card-sample/xxx.zip
         var packageSrcPath = path.join(baseDir, "build", packageFileName),
@@ -219,8 +224,16 @@ module.exports.build = function (dir) {
         }
         //manifestPath = /Top/__contents/card-sample/build/src/manifest
         //manifestRoot = /Top/__contents/card-sample/build/src
-        var manifestPath = path.join(baseDir, "build", "src", "manifest.json"),
-          sourceDir = path.join(baseDir, "build", "src"),
+
+        var manifestPath;
+        if (config.src.manifest) {
+          manifestPath = path.join(baseDir, "build", config.src.path, config.src.manifest);
+        }
+        if (!config.src.manifest || !fs.pathExistsSync(manifestPath)) {
+          manifestPath = path.join(baseDir, "build", "src", "manifest.json")
+        }
+      
+        var sourceDir = path.dirname(manifestPath),
           manifest = util.json.fromFile(manifestPath),
           i18nDir = path.join(sourceDir, "i18n"),
           artifactManifest,

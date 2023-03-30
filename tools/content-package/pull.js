@@ -43,7 +43,7 @@ module.exports.pull = function (dir, local) {//load content.json
       name: is card-sample which defined in content.js, config the below one
     */
     console.log("Start pulling content for Artifact: " + name);
-    if (config.src) {
+    if (config.src && cdmTypes.indexOf(config.type.toLowerCase()) === -1) {
       config.src.path = contentConfig[n].src.path || "";
       config.src.build = contentConfig[n].src.build || "";
       //baseDir will be /Top/__contents/card-sample
@@ -81,56 +81,55 @@ module.exports.pull = function (dir, local) {//load content.json
         fromDir = path.join(fromDir, config.src.path);
       }
       // Only Non cdmTypes need to copy to build
-      if (cdmTypes.indexOf(config.type.toLowerCase()) === -1) {
-        console.log("From Folder: " + fromDir);
-        // If the artifact already have the package.json which means it has build script
-        if (fs.existsSync(path.join(fromDir,"package.json"))){
-          console.log("Copy From Folder to: " + path.join(baseDir, "build"));
-          fs.copySync(fromDir, path.join(baseDir, "build"));
-        } else {
-          console.log("Artifact don't have build script, will use default one");
-          // Copy the from folder /home/user/cpproject/mycard to Target Folder "/Top/__contents/card-sample/build/src"
-          console.log("Copy From Folder to: " + path.join(baseDir, "build", "src"));
-          fs.copySync(fromDir, path.join(baseDir, "build", "src"));
-          
-          if (config.type.toLowerCase() === "card") {
-            // Find out /Top/__contents/card-sample/build/src/manifest.json
-            const artifactManifestjson = util.json.fromFile(path.join(baseDir, "build", 'src', 'manifest.json'));
-            const cardName = artifactManifestjson["sap.app"].id.replace(/\./g, "-");
-            // Add package.json
-            console.log("Write file: " + path.join(baseDir, "build", "package.json"));
-            let tmpText = fs.readFileSync(path.join(__dirname, "../resources/card-package.json.template"), 'utf-8').replace("{{CardName}}", cardName);
-            fs.writeFileSync(path.join(baseDir, "build", "package.json"), tmpText);
-            // Add ui5.yaml
-            console.log("Write file: " + path.join(baseDir, "build", "ui5.yaml"));
-            tmpText = fs.readFileSync(path.join(__dirname, "../resources/card-ui5.yaml.template"), 'utf-8').replace("{{CardName}}", cardName);
-            fs.writeFileSync(path.join(baseDir, "build", "ui5.yaml"), tmpText);
-    
-            rimraf.sync(path.join(baseDir, "build", "src", ".card"));
-            rimraf.sync(path.join(baseDir, "build", "src", ".wst"));
-            rimraf.sync(path.join(baseDir, "build", "src", "ui5.yaml"));
-            rimraf.sync(path.join(baseDir, "build", "src", "package.json"));
-          
-          } else {
-            // Find out /Top/__contents/card-sample/build/src/manifest.json
-            const artifactManifestjson = util.json.fromFile(path.join(baseDir, "build", 'src','manifest.json'));
-            const artifactName = artifactManifestjson["sap.artifact"].id.replace(/\./g, "-");
-            // Add package.json
-            console.log("Write file: " + path.join(baseDir, "build", "package.json"));
-            let tmpText = fs.readFileSync(path.join(__dirname, "../resources/package.json.template"), 'utf-8').replace("{{ArtifactName}}", artifactName);
-            fs.writeFileSync(path.join(baseDir, "build", "package.json"), tmpText);
-          }
-        }
 
-        if (local) {
-          // if use local tools
-          console.log("Use local tools for " + path.join(baseDir, "build", config.src.path, "scripts", "build.js"));
-          // Open /Top/__contents/card-sample/build/script/build.js
-          var build = fs.readFileSync(path.join(baseDir, "build", config.src.path, "scripts", "build.js"), { encoding: "utf-8" });
-          // replace "require("sap-workzone-cpkg-tools")" to "require("/../../tools/index.js")"
-          build = build.replace("sap-workzone-cpkg-tools", __dirname + "/../../tools/index.js");
-          fs.writeFileSync(path.join(baseDir, "build", config.src.path, "scripts", "build.js"), build);
-        }    
+      console.log("From Folder: " + fromDir);
+      // If the artifact already have the package.json which means it has build script
+      if (config.src.build || fs.existsSync(path.join(fromDir,"package.json"))){
+        console.log("Copy From Folder to: " + path.join(baseDir, "build"));
+        fs.copySync(fromDir, path.join(baseDir, "build"));
+      } else {
+        console.log("Artifact don't have build script, will use default one");
+        // Copy the from folder /home/user/cpproject/mycard to Target Folder "/Top/__contents/card-sample/build/src"
+        console.log("Copy From Folder to: " + path.join(baseDir, "build", "src"));
+        fs.copySync(fromDir, path.join(baseDir, "build", "src"));
+        
+        if (config.type.toLowerCase() === "card") {
+          // Find out /Top/__contents/card-sample/build/src/manifest.json
+          const artifactManifestjson = util.json.fromFile(path.join(baseDir, "build", 'src', 'manifest.json'));
+          const cardName = artifactManifestjson["sap.app"].id.replace(/\./g, "-");
+          // Add package.json
+          console.log("Write file: " + path.join(baseDir, "build", "package.json"));
+          let tmpText = fs.readFileSync(path.join(__dirname, "../resources/card-package.json.template"), 'utf-8').replace("{{CardName}}", cardName);
+          fs.writeFileSync(path.join(baseDir, "build", "package.json"), tmpText);
+          // Add ui5.yaml
+          console.log("Write file: " + path.join(baseDir, "build", "ui5.yaml"));
+          tmpText = fs.readFileSync(path.join(__dirname, "../resources/card-ui5.yaml.template"), 'utf-8').replace("{{CardName}}", cardName);
+          fs.writeFileSync(path.join(baseDir, "build", "ui5.yaml"), tmpText);
+  
+          rimraf.sync(path.join(baseDir, "build", "src", ".card"));
+          rimraf.sync(path.join(baseDir, "build", "src", ".wst"));
+          rimraf.sync(path.join(baseDir, "build", "src", "ui5.yaml"));
+          rimraf.sync(path.join(baseDir, "build", "src", "package.json"));
+        
+        } else {
+          // Find out /Top/__contents/card-sample/build/src/manifest.json
+          const artifactManifestjson = util.json.fromFile(path.join(baseDir, "build", 'src','manifest.json'));
+          const artifactName = artifactManifestjson["sap.artifact"].id.replace(/\./g, "-");
+          // Add package.json
+          console.log("Write file: " + path.join(baseDir, "build", "package.json"));
+          let tmpText = fs.readFileSync(path.join(__dirname, "../resources/package.json.template"), 'utf-8').replace("{{ArtifactName}}", artifactName);
+          fs.writeFileSync(path.join(baseDir, "build", "package.json"), tmpText);
+        }
+      }
+
+      if (local) {
+        // if use local tools
+        console.log("Use local tools for " + path.join(baseDir, "build", config.src.path, "scripts", "build.js"));
+        // Open /Top/__contents/card-sample/build/script/build.js
+        var build = fs.readFileSync(path.join(baseDir, "build", config.src.path, "scripts", "build.js"), { encoding: "utf-8" });
+        // replace "require("sap-workzone-cpkg-tools")" to "require("/../../tools/index.js")"
+        build = build.replace("sap-workzone-cpkg-tools", __dirname + "/../../tools/index.js");
+        fs.writeFileSync(path.join(baseDir, "build", config.src.path, "scripts", "build.js"), build);
       }
       console.log("Completed pulling content for Artificat: " + name + "\n");
     } else {

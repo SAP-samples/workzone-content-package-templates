@@ -172,6 +172,11 @@ Ensure to that you have a valid access to the git repository.
 			"path": "./",
 			//the build scripts to create the artifact package, you can leave it blank to use the default build
 			"build": "npm i && npm run-script build",
+            //Optional: the location of the artifact's package after the build
+			"package": "company-department-card-name.zip",
+			//Optional: the location of the manifest to extract the sap.artifact settings for the Content Package
+			"manifest": "src/manifest.json"
+
 		}
 	}
 	...
@@ -199,7 +204,10 @@ Instead of the above git and branch entry you can use the `from` entry to use lo
 			"path": "./",
 			//the build scripts to create the artifact package
 			"build": "npm i && npm run-script build",
-			//the location of the artifact's package after the build
+			//Optional: the location of the artifact's package after the build,
+            "package": "sap-workzone-cpkg-card-sample.zip",
+			//Optional: the location of the manifest to extract the sap.artifact settings for the Content Package
+			"manifest": "src/manifest.json"
 		}
 	}
 	...
