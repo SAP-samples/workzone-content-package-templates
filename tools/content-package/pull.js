@@ -10,7 +10,7 @@ module.exports.pull = function (dir, local) {//load content.json
     util = require("../util/util.js"),
     fs = require("fs-extra"),
     contentConfig = util.json.fromFile(path.join(dir, util.relativeDir(dir), "content.json")),
-    cdmTypes = [ "workpage", "space", "role", "businessapp", "urltemplate"],
+    cdmTypes = [ "workpage", "space", "role", "businessapp", "urltemplate", "catalog"],
     contentsDir = path.join(dir, util.relativeDir(dir), "__contents");
   
   util.log.fancy("Starting Pull");

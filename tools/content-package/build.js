@@ -7,7 +7,7 @@ module.exports.build = function (dir) {
     propertiesReader = require("properties-reader"),
     businessHubBuild = process.argv.slice(2)[0] === "-b";
 
-  var validTypes = ["card", "workflow", "workspace-template", "workspace", "homepage", "workpage", "space", "role", "businessapp", "urltemplate"];
+  var validTypes = ["card", "workflow", "workspace-template", "workspace", "homepage", "workpage", "space", "role", "businessapp", "urltemplate", "catalog"];
 
   function getJSONPathValue(sPath, o) {
     var a = sPath.split("/");
@@ -21,8 +21,9 @@ module.exports.build = function (dir) {
 
   function createCDMBusinessAppForCard(cardManifest, i18nPath) {
 
-    var appId = `${cardManifest["sap.app"].id}.app`;
-    var vizId = `${cardManifest["sap.app"].id}.viz`;
+    var cardId = cardManifest["sap.app"].id;
+    var appId = `${cardId}.app`;
+    var vizId = `${cardId}.viz`;
     var allKeys = util.i18n.allKeys(cardManifest);
     var result = {
       _version: "3.2.0",
@@ -40,7 +41,7 @@ module.exports.build = function (dir) {
             vizType: "sap.card",
             vizConfig: cardManifest,
             vizResources: {
-              artifactId: appId
+              artifactId: cardId
             }
           }
         }
@@ -160,6 +161,7 @@ module.exports.build = function (dir) {
       config.type === "role" ||
       config.type === "space" ||
       config.type === "businessapp" ||
+      config.type === "catalog" ||
       config.type === "urltemplate") {
       var contentPath = path.join(root, config.src.from, config.src.content);
       var i18nPath = path.join(root, config.src.from, "i18n");
@@ -204,7 +206,7 @@ module.exports.build = function (dir) {
         if (config.src.package) {
           packageFileName = path.join(config.src.path, config.src.package);
         } else {
-          var artifactPackagejson = util.json.fromFile(path.join(baseDir, "build", "package.json"));
+          const artifactPackagejson = util.json.fromFile(path.join(baseDir, "build", "package.json"));
           packageFileName = artifactPackagejson.name + ".zip"
         }  
         //packageSrcPath = /Top/__contents/card-sample/build/xxx.zip
