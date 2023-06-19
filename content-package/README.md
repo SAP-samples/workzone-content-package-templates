@@ -116,11 +116,11 @@ The manifest.json file allows the following settings. Please maintain the values
         "documentation": {
             "url": ""
 		},
-		"consumption": [
-			//List of strings that define the Work Zone Product for which this content package should be used
-			//"SWZHR" is used for SAP Work Zone for HR product
-			//If not provided or empty all SAP Work Zone products will be able to install this content package
-		],
+        "consumption": [
+            //List of strings that define the Work Zone Product for which this content package should be used
+            //"SWZHR" is used for SAP Work Zone for HR product
+            //If not provided or empty all SAP Work Zone products will be able to install this content package
+        ],
         // Dependencies of this package
         "dependencies": {
             "applications": [{
