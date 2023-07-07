@@ -1,32 +1,30 @@
-# SAP Work Zone Project Templates for Content Packages
 
-[![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/workzone-content-package-templates)](https://api.reuse.software/info/github.com/SAP-samples/workzone-content-package-templates)
+
+
+# SAP Work Zone Project Templates for Content Packages
 
 ## Description
 
-This repository contains templates to setup repositories/projects and tools to create Content Packages for SAP Work Zone.
-Content Packages can contain a variety of artifacts. Project templates for these artifacts can be found here
+These content package samples provide information about how to create custom content for SAP Start (Beta) and for SAP Launchpad Service New Site Experience (Beta). This document explains the corresponding artifacts needed. 
 
-- **card**  
-  Create [UI Integration Cards](./card/README.md) projects
-- **workflow**  
-  Create [Workflow](./workflow/README.md) projects
-- **workspace-template**  
-  Create [Workspace-Template](./workspace-template/README.md)
-- **workspace**  
-  Create [Workspace](./workspace/README.md) projects
-- **homepage**  
-  Create [Home Page](./homepage/README.md) projects
+UI Integration Cards and the corresponding CDM (Common Data Model) descriptions are covered within this samples.
+
+Learn more about the topics:
+- UI Integration Cards
+  - [Documentation](./docs/cards/introduction.md)
+  
+- CDM Entities
+  - [Documentation](./docs/cdm/introduction.md)
+    - [Roles](./docs/cdm/introduction.md#role)
+    - [Spaces](./docs/cdm/introduction.md#space)
+    - [WorkPage](./docs/cdm/introduction.md#workpage)
+
+- Content Package 
+  - [Introduction](./docs/content-package/introduction.md)
+  - [Define Content](./docs/content-package/introduction.md#defining-content-contentjson)
+  - [Creating a package](./docs/content-package/introduction.md#creation-of-the-content-package)
 
 Additionally, the a project template to configure and build the content package containing the above artifacts can be found here
-
-- **content-package**  
-  Create a project for a [Content Package](./content-package/README.md) that bundles the above artifacts
-
-During the build of the content package tooling is utilized
-
-- **tools**  
-  Required build tooling to create bundles for the artifacts and the package
 
 ## Requirements
 
@@ -38,6 +36,10 @@ The location to be cloned is
 
 ```
 https://github.com/SAP-samples/workzone-content-package-templates.git
+```
+Switch to cdm branch
+```
+git checkout cdm
 ```
 
 ## Known Issues

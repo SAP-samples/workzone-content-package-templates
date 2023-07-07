@@ -1,6 +1,0 @@
-.DS_Store
-node_modules
-*.zip
-!src/*.zip
-dist
-package-lock.json

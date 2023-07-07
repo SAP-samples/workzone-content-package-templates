@@ -1,6 +1,7 @@
 {
 	"sap.package": {
-		"id": "sap.workzone.content.package.sample",
+		"id": "my.comp.ns.cpkg",
+    "__id": "my.company.ns.contentpackage.sample",
 		"packageVersion": {
 			"version": "1.0.0",
 			"upgradeNotification": "all"
@@ -19,6 +20,11 @@
 			]
 		},
 		"products": "",
+		"vendor": {
+			"id": "",
+			"name": "YourCompany",
+			"url": "www.yourcompany.com"
+		},
 		"categories": "",
 		"scope": "external",
 		"license": {
