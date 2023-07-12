@@ -1,11 +1,11 @@
 
 
 
-# SAP Work Zone Project Templates for Content Packages
+# SAP Build Work Zone Project Templates for Content Packages
 
 ## Description
 
-These content package samples provide information about how to create custom content for SAP Start and for SAP Work Zone Standard New Site Experience. This document explains the corresponding artifacts needed. 
+These content package samples provide information about how to create custom content for SAP Start and for SAP Build Work Zone Standard (New Site Experience). This document explains the corresponding artifacts needed. 
 
 UI Integration Cards and the corresponding CDM (Common Data Model) descriptions are covered within this samples.
 
@@ -61,7 +61,7 @@ In case you have a question, find a bug, or otherwise need support to use SAP pr
 
 If you have suggestions on how to improve the template and associated code, you're welcome to post it as an issue here:
 
-- [SAP Work Zone Project Templates for Content Packages Issues](https://github.com/SAP-samples/workzone-content-package-templates/issues)
+- [SAP Build Work Zone Project Templates for Content Packages Issues](https://github.com/SAP-samples/workzone-content-package-templates/issues)
 
 ## License
 
