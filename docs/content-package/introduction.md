@@ -1,6 +1,6 @@
 # Content Package
 
-A content package bundles different content artifacts for SAP Launchpad Service New Site Experience (Beta). 
+A content package bundles different content artifacts for SAP Build Work Zone Standard (New Site Experience). 
 
 The artifacts that can be contained in the content package are:
 - [CDM content](../cdm/introduction.md)
