@@ -8,7 +8,7 @@ This document describes which CDM entity types are supported for content package
 
 ## Entity Types
 
-The CDM entity types which can be bundled into a content package and deployed to SAP Start (Beta) and SAP Launchpad Service New Site Experience (Beta) cover:
+The CDM entity types which can be bundled into a content package and deployed to SAP Start and SAP Buid Work Zone Standard New Site Experience cover:
   - Roles
   - Spaces
   - Workpages
