@@ -18,6 +18,7 @@ Learn more about the topics:
     - [Roles](./docs/cdm/introduction.md#role)
     - [Spaces](./docs/cdm/introduction.md#space)
     - [WorkPage](./docs/cdm/introduction.md#workpage)
+    - [Business App](./docs/cdm/introduction.md#business-app)
 
 - Content Package 
   - [Introduction](./docs/content-package/introduction.md)
