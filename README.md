@@ -5,7 +5,7 @@
 
 ## Description
 
-These content package samples provide information about how to create custom content for SAP Start (Beta) and for SAP Launchpad Service New Site Experience (Beta). This document explains the corresponding artifacts needed. 
+These content package samples provide information about how to create custom content for SAP Start and for SAP Work Zone Standard New Site Experience. This document explains the corresponding artifacts needed. 
 
 UI Integration Cards and the corresponding CDM (Common Data Model) descriptions are covered within this samples.
 
