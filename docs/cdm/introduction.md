@@ -2,7 +2,7 @@
 
 ## Overview
 
-The _Common Data Model_ (CDM) is used to describe the main content entities which are used in SAP Start (Beta) and SAP Launchpad Service New Site Experience (Beta), such as spaces, workPages, and apps. Such CDM content definitions along with further artifacts such as card bundles can be packaged into a [Content Package](../content-package/introduction.md).
+The _Common Data Model_ (CDM) is used to describe the main content entities which are used in SAP Start and SAP Buid Work Zone Standard New Site Experience, such as spaces, workpages, and apps. Such CDM content definitions along with further artifacts such as card bundles can be packaged into a [Content Package](../content-package/introduction.md).
 
 This document describes which CDM entity types are supported for content packages and provides corresponding examples and JSON schema definitions. 
 
