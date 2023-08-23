@@ -34,9 +34,18 @@
       "content": "workpage2.json"
     }
   },
+  "sample-businessapp1": {
+    "type": "businessapp",
+    "src": {
+      "from": "../cdm-samples/src",
+      "content": "businessapp1.json"
+    }
+  },
   "bubble-chart-card-sample": {
     "type": "card",
     "src": {
+      "appId": "my.company.ns.contentpackage.app1",
+      "vizId": "my.company.ns.contentpackage.app1.viz1",
       "from": "../card-samples/analytical-card-samples/bubble-chart-card-sample",
       "build": "npm i && npm run-script build",
       "package": "my.company.ns.bubble.chart.card.zip",

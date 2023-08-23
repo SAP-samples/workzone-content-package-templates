@@ -2,17 +2,19 @@
 
 ## Overview
 
-The _Common Data Model_ (CDM) is used to describe the main content entities which are used in SAP Start and SAP Buid Work Zone Standard New Site Experience, such as spaces, workpages, and apps. Such CDM content definitions along with further artifacts such as card bundles can be packaged into a [Content Package](../content-package/introduction.md).
+The _Common Data Model_ (CDM) is used to describe the main content entities which are used in SAP Start (Beta) and SAP Launchpad Service New Site Experience (Beta), such as spaces, workPages, and apps. Such CDM content definitions along with further artifacts such as card bundles can be packaged into a [Content Package](../content-package/introduction.md).
 
 This document describes which CDM entity types are supported for content packages and provides corresponding examples and JSON schema definitions. 
 
 ## Entity Types
 
-The CDM entity types which can be bundled into a content package and deployed to SAP Start and SAP Buid Work Zone Standard New Site Experience cover:
+The CDM entity types which can be bundled into a content package and deployed to SAP Start (Beta) and SAP Launchpad Service New Site Experience (Beta) cover:
   - Roles
   - Spaces
   - Workpages
   - Business Apps
+  - Catalogs
+  - URL-Templates
 
 ![Bild](CDM-Model.png)
 
@@ -58,6 +60,22 @@ The current version of the [_Content Package Bundler_](../content-package/introd
 The definition of other visualization types (e.g. Tiles) as well as an own TargetAppConfig will be covered in future versions of the Content Package Bundler.
 
 > [JSON Schema](schema/businessapp.json) 
+
+### Catalog
+
+A _Catalog_ groups business apps and their visualizations around some business semantics. This grouping is used in the _Content Finder_ when users browse the available app _visualizations_ to place them on a _Workpage_.
+
+Technically, a catalog is defined by an ID, a human readable title and references to business app visualizations (see example and JSON schema below). 
+
+> [Example](../../cdm-samples/src/catalog1.json) \
+> [JSON Schema](schema/catalog.json) 
+
+
+### URL-Template
+A _URL-Template_ is composed of a URL pattern, parameters, and additional configurations. Following [RFC 6570 (URI template)](https://www.rfc-editor.org/rfc/rfc6570.txt), it defines how the launch URL of exposed apps should be constructed. A URL template contains parameters that are substituted during URL creation based on navigation parameters, environment variables, and the runtime platform.
+
+> [Example](../../cdm-samples/src/urltemplate1.json) \
+> [JSON Schema](schema/urltemplate.json) 
 
 ## Translatable Texts
 

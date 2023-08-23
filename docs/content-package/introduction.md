@@ -1,14 +1,14 @@
 # Content Package
 
-A content package bundles different content artifacts for SAP Build Work Zone Standard (New Site Experience). 
+A content package bundles different content artifacts for SAP Launchpad Service New Site Experience (Beta). 
 
 The artifacts that can be contained in the content package are:
 - [CDM content](../cdm/introduction.md)
   - [Roles](../cdm/introduction.md#role)
   - [Spaces](../cdm/introduction.md#space)
   - [WorkPage](../cdm/introduction.md#workpage)
-- [UI Integration Cards](../cards/introduction.md)
-  - Generates: [BusinessApp](../cdm/introduction.md#business-app)
+  - [Business App](../cdm/introduction.md#businessapp)
+    - [UI Integration Cards](../cards/introduction.md) as Visualizations of Business App
 
 The artifact sources are located in the corresponding folders (cdm-samples, card-samples).
 
@@ -136,6 +136,8 @@ In a json map the content is listed. It has the following structure.
   "artifact1-name": {
     "type": "card",                   // the type of the artifact, card|role|space|workpage
     "src": {                          // source configuration of the content
+      "appId":"ns.businessapp1",      // (Optional) If added, this card will become the visualization of this businessApp. If not, an automatic buisiness App will be added to this card
+      "vizId":"ns.businessapp.viz1",  // (Optional) If added, this will be visualization id. If not, it will use card_id.viz as the visualization id
       "from": "../folder",            // the folder where the sources are located
       "path": "./"                    // (optional) the path to execute the build within the above folder
       "build": "command"              // (optional) the build command to be executed e.g. npm i && npm run-script build
@@ -147,8 +149,24 @@ In a json map the content is listed. It has the following structure.
 }
 ````
 
-### UI Integration Cards Artifacts
+### Business App & UI Integraton Cards as Visualization
+Role definitions can be easily integrated as they do not require an optimized build step.
+<details>
+  <summary>Sample Code for adding a BusinessApp</summary>
+  
+  ```` json
+    "sample-businessapp1": {
+      "type": "businessapp",
+      "src": {
+        "from": "../cdm-samples/src",
+        "content": "businessapp1.json"
+      }
+    },
+  `````
+</details>
+
 UI Integration Cards are development artifacts. They need a build step to create optimized results. Also their resources need to be integrated and added to the content package as a card-package zip file.
+Add the appId and vizId to set the UI Integration Card as the visualization of the defined businessApp. If not specified, build tool will automatically generate a default business App for the card.
 
 <details>
   <summary>Sample Code for adding a Card</summary>
@@ -157,6 +175,8 @@ UI Integration Cards are development artifacts. They need a build step to create
     "static-list-card-sample": {
       "type": "card",
       "src": {
+        "appId":"ns.businessapp1",      // (Optional) If added, this card will become the visualization of this businessApp. If not, an automatic buisiness App will be added to this card
+        "vizId":"ns.businessapp.viz1",  // (Optional) If added, this will be visualization id. If not, it will use card_id.viz as the visualization id
         "from": "../card-samples/list-card-samples/static-list-card-sample",
         "path": "./",
         "build": "npm i && npm run-script build",
