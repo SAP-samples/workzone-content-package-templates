@@ -19,11 +19,10 @@ module.exports.build = function (dir) {
     return oNode ? oNode : "";
   }
 
-  function createCDMBusinessAppForCard(cardManifest, i18nPath) {
-
+  function createCDMBusinessAppForCard(cardManifest, i18nPath, predefinedVizId) {
     var cardId = cardManifest["sap.app"].id;
     var appId = `${cardId}.app`;
-    var vizId = `${cardId}.viz`;
+    var vizId = predefinedVizId ||`${cardId}.viz`;
     var allKeys = util.i18n.allKeys(cardManifest);
     var result = {
       _version: "3.2.0",
@@ -155,6 +154,36 @@ module.exports.build = function (dir) {
     }
   }
 
+  function mergeAppAndCardTranslation(firstArray, secondArray) {
+    var mergedArray = [];
+
+    var maxLength = Math.max(firstArray.length, secondArray.length);
+
+    for (var i = 0; i < maxLength; i++) {
+      var mergedItem = {};
+
+      if (i < firstArray.length) {
+        for (var key in firstArray[i]) {
+          mergedItem[key] = firstArray[i][key];
+        }
+      }
+
+      if (i < secondArray.length) {
+        for (var key in secondArray[i]) {
+          if (mergedItem[key] === undefined) {
+            mergedItem[key] = secondArray[i][key];
+          } else if (typeof mergedItem[key] === 'object' && typeof secondArray[i][key] === 'object') {
+            mergedItem[key] = Object.assign({}, mergedItem[key], secondArray[i][key]);
+          }
+        }
+      }
+
+      mergedArray.push(mergedItem);
+    }
+
+    return mergedArray;
+  }
+
   function buildContent(name, config) {
     util.log.fancy("Building artifact name: " + name + " type:" + config.type);
     if (config.type === "workpage" ||
@@ -166,12 +195,38 @@ module.exports.build = function (dir) {
       var contentPath = path.join(root, config.src.from, config.src.content);
       var i18nPath = path.join(root, config.src.from, "i18n");
       var content = util.json.fromFile(contentPath);
-      content.texts = createCDMTextsFromI18N(i18nPath, util.i18n.allKeys(content), {
-        locale: "",
-        textDictionary: {
-          description: "Description"
-        }
-      });
+      var app = appConfigs[name];
+      if (config.type === "businessapp" && app.appConfig && app.cardConfig) {
+        content.payload = content.payload || {};
+        content.payload.visualizations = content.payload.visualizations || {};
+        content.payload.visualizations[app.cardConfig.vizId] = {
+          vizType: "sap.card",
+          vizConfig: app.cardConfig.manifest,
+          vizResources: {
+            artifactId: app.cardConfig.manifest["sap.app"].id
+          }
+        };
+        var appTranslation = createCDMTextsFromI18N(i18nPath, util.i18n.allKeys(content), {
+          locale: "",
+          textDictionary: {
+            description: "Description"
+          }
+        });
+        var cardTranslation = (function(){
+          var sourceDir = path.dirname(app.cardConfig.manifestFilePath),
+            i18nDir = path.join(sourceDir, "i18n");
+          var cardConfig = createCDMBusinessAppForCard(app.cardConfig.manifest, i18nDir);
+          return cardConfig.texts;
+        })();
+        content.texts = mergeAppAndCardTranslation(appTranslation, cardTranslation);
+      } else {
+        content.texts = createCDMTextsFromI18N(i18nPath, util.i18n.allKeys(content), {
+          locale: "",
+          textDictionary: {
+            description: "Description"
+          }
+        });
+      }
       aCDMEntities.push(content);
     } else {
       if (config.src.git || config.src.from) {
@@ -204,7 +259,7 @@ module.exports.build = function (dir) {
         //calcuate the zip file name
         var packageFileName;
         if (config.src.package) {
-          packageFileName = path.join(config.src.path, config.src.package);
+          packageFileName = path.join(config.src.package);
         } else {
           const artifactPackagejson = util.json.fromFile(path.join(baseDir, "build", "package.json"));
           packageFileName = artifactPackagejson.name + ".zip"
@@ -244,8 +299,12 @@ module.exports.build = function (dir) {
         //creating artifact.json
         if (manifest["sap.app"] && manifest["sap.app"].type === "card") {
 
-          //create cdm content for card
-          aCDMEntities.push(createCDMBusinessAppForCard(manifest, i18nDir));
+          if (!config.src.appId) {
+            //create cdm content for card
+            aCDMEntities.push(createCDMBusinessAppForCard(manifest, i18nDir, config.src.vizId));
+          } else {
+            console.log('appId is defined in card, but app not found. Hence, not processing card where key is "' + name + '".');
+          }
 
           artifactManifest = {
             _version: "1.27.0",
@@ -356,7 +415,53 @@ module.exports.build = function (dir) {
   }
 
   var aContentInfo = [],
-    aCDMEntities = []
+    aCDMEntities = [],
+    appConfigs = {};
+
+  for (var n in contentConfig) {
+    var type = contentConfig[n].type;
+    if (type === "businessapp") {
+      var src = contentConfig[n].src;
+      var appConfigFilePath = path.join(root, src.from, src.content);
+      var appConfigFileContent = util.json.fromFile(appConfigFilePath);
+      var appConfigId = appConfigFileContent.identification && appConfigFileContent.identification.id;
+
+      appConfigs[n] = {
+        appConfig: {
+          manifest: appConfigFileContent,
+          appId: appConfigId
+        }
+      }
+    }
+  }
+
+  for (var n in contentConfig) {
+    var type = contentConfig[n].type;
+    if (type === "card") {
+      var src = contentConfig[n].src;
+      var appId = src.appId;
+
+      // card type with appId
+      if (appId) {
+        for (var appKeyName in appConfigs) {
+          if (appConfigs.hasOwnProperty(appKeyName)) {
+            if (appConfigs[appKeyName].appConfig.appId === appId) {
+              var cardManifestFilePath = path.join(root, contentConfig[n].src.from, contentConfig[n].src.manifest);
+              var cardManifestFileContent = util.json.fromFile(cardManifestFilePath);
+              var fallbackVizId = cardManifestFileContent["sap.app"].id + ".viz";
+              var vizId = src.vizId || fallbackVizId;
+              appConfigs[appKeyName].cardConfig = {
+                manifest: cardManifestFileContent,
+                manifestFilePath: cardManifestFilePath,
+                vizId: vizId,
+                cardKey: n
+              };
+            }
+          }
+        }
+      }
+    }
+  }
 
   for (var n in contentConfig) {
     var type = contentConfig[n].type;
