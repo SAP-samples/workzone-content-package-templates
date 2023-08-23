@@ -24,7 +24,7 @@ module.exports.build = function (dir) {
       console.log(ui5path);
       if (!fs.existsSync(ui5path)) {
           console.log("install @ui5/cli");
-          util.spawn.sync("npm install @ui5/cli@2.14.14", path.join(__dirname, "..", "..", ".."), "fail to install ui5");
+          util.spawn.sync("npm install @ui5/cli@3.3.1", path.join(__dirname, "..", "..", ".."), "fail to install ui5");
       }
       if (fs.existsSync(ui5path)) {
           process.env.PATH += ":"+path.dirname(ui5path);
@@ -33,6 +33,11 @@ module.exports.build = function (dir) {
 
   console.log(" - Create dist folder and content");
 
+  if (!fs.existsSync(path.join(root, 'node_modules'))) {
+    console.log("Do npm install first");
+    util.spawn.sync("npm install", root, "fail to do npm install");
+  }
+  
   console.log(" - Run UI5 build: " + "ui5 build " + ui5BuildParams);
   util.spawn.sync("ui5 build " + ui5BuildParams, root, "UI5 build failed");
 
