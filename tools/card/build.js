@@ -24,7 +24,7 @@ module.exports.build = async function (dir) {
       console.log(ui5path);
       if (!fs.existsSync(ui5path)) {
           console.log("install @ui5/cli");
-          util.spawn.sync("npm install @ui5/cli@4.0.55", path.join(__dirname, "..", "..", ".."), "fail to install ui5");
+          util.spawn.sync("npm install @ui5/cli@4.0.62", path.join(__dirname, "..", "..", ".."), "fail to install ui5");
       }
       if (fs.existsSync(ui5path)) {
           process.env.PATH += ":"+path.dirname(ui5path);
