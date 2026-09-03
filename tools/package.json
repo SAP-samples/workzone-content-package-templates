@@ -1,7 +1,7 @@
 {
   "name": "@content/sap-workzone-cpkg-tools",
   "description": "Build tools to create content packages and their content artifacts",
-  "version": "1.2.0",
+  "version": "1.4.0",
   "repository": {
     "type": "git",
     "url": "https://github.com:SAP-samples/workzone-content-package-templates.git",
